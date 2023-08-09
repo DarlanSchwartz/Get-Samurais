@@ -54,7 +54,7 @@ html, body, span, applet, object, iframe,
     #root{
         min-height: 100%;
 		position: relative;
-        --toastify-color-success: #5D9040 !important;
+        --toastify-color-success: #1f1f1f !important;
        
     }
 
@@ -78,6 +78,7 @@ html, body, span, applet, object, iframe,
         background-size: cover;
         filter: blur(4px);
         opacity: 30%;
+		pointer-events: none;
     }
 
 

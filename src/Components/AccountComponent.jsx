@@ -2,9 +2,17 @@ import { styled } from "styled-components";
 import CustomInput from "./CustomInput";
 import { useContext, useState } from "react";
 import UserContext from "../Contexts/UserContext";
+import axios from "axios";
+import { BsSearch } from "react-icons/bs";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function AccountComponent() {
     const { user, setUser, setShowAuthenticate } = useContext(UserContext);
+    const defaultPostalCode = "Insert postal code";
+    const invalidPostalCode = "Invalid postal code";
+
+    const [showLogin, setShowLogin] = useState(true);
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
@@ -14,20 +22,116 @@ export default function AccountComponent() {
     const [registerPassword, setRegisterPassword] = useState("");
     const [registerPassword2, setRegisterPassword2] = useState("");
     const [registerPhone, setRegisterPhone] = useState("");
+    const [registerCity, setRegisterCity] = useState(defaultPostalCode);
+    const [postalCode, setPostalCode] = useState("");
 
+    const [loadingPostal, setLoadingPostal] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    function Login(e)
-    {
-        e.preventDefault();
+    function formatPostalCode(value) {
+        const valueWithoutLetters = value.replace(/\D/g, '');
+        const finalValue = valueWithoutLetters.slice(0, 8);
+        setPostalCode(finalValue);
+        if (finalValue.length < 8 && finalValue.length > 0) {
+            setRegisterCity(invalidPostalCode);
+        }
+        else {
+            setRegisterCity(defaultPostalCode);
+        }
     }
 
-    function Register(e)
-    {
-        e.preventDefault();
+    function searchCEP() {
+        setLoadingPostal(true);
+
+        axios.get(`https://brasilapi.com.br/api/cep/v2/${postalCode}`)
+            .then(res => {
+                setRegisterCity(res.data.city ? res.data.city : invalidPostalCode);
+                setLoadingPostal(false);
+            }).catch(error => {
+
+                setLoadingPostal(false);
+            });
     }
 
-    const [showLogin, setShowLogin] = useState(true);
+    function Login(e) {
+        e.preventDefault();
+        const loginObj = {
+            email: loginEmail,
+            password: loginPassword
+        }
+        setLoading(true);
+        axios.post(`${import.meta.env.VITE_API_URL}/signin`, loginObj)
+            .then(res => {
+                setLoading(false);
+                setShowAuthenticate(false);
+                setUser({name:"dan"});
+            }).catch(error => {
+                Swal.fire({
+                    title: `Error ${error.response.status}`,
+                    text: `${error.response.data}`,
+                    
+                    imageUrl:`/oh-no.gif?random=${Date.now()}`,
+                    width: 300,
+                    background:"#1f1f1f",
+                    color:"white",
+                    confirmButtonColor: "red",
+                    confirmButtonText: 'Ok'
+                  });
+                setLoading(false);
+               
+            });
+    }
+
+    function Register(e) {
+        e.preventDefault();
+        if(registerCity == defaultPostalCode || registerCity == invalidPostalCode) return;
+        const registerObj = {
+            name:registerName,
+            email: registerEmail,
+            password: registerPassword,
+            confirmPassword:registerPassword2,
+            cellphone: Number(registerPhone),
+            city:registerCity
+        }
+
+        setLoading(true);
+        axios.post(`${import.meta.env.VITE_API_URL}/signup`, registerObj)
+        .then(res => {
+            toast.success('⚔ You became a Samurai ⚔', {
+                position: "bottom-left",
+                autoClose: 10000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+                setLoginEmail(registerEmail);
+                setLoginPassword(registerPassword);
+                setShowLogin(true);
+                setLoading(false);
+
+        }).catch(error => {
+            Swal.fire({
+                title: `Error ${error.response.status}`,
+                text: `${error.response.data}`,
+                icon: 'error',
+                width: 300,
+                confirmButtonColor: "red",
+                confirmButtonText: 'Ok'
+              });
+              setLoading(false);
+        });
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            searchCEP();
+        }
+    };
+
+
     return (
         <LoginModal onClick={() => setShowAuthenticate(false)}>
             {showLogin ?
@@ -37,8 +141,8 @@ export default function AccountComponent() {
                     <form onSubmit={Login}>
                         <CustomInput autocomplete="true" input_value={loginEmail} set_input_value={(e) => setLoginEmail(e)} type={"email"} name={"email"} is_required={true} placeholder={"E-mail"} />
                         <CustomInput placeholder_color={"white"} autocomplete="true" input_value={loginPassword} set_input_value={(e) => setLoginPassword(e)} type={"password"} name={"password"} is_required={true} placeholder={"Password"} content_reveal={"true"} />
-                        <button>Sign in</button>
-                        <a>Don't have an account? <span onClick={(e)=> {e.stopPropagation(); setShowLogin(false)}}>Sign up</span> </a>
+                        <button disabled={loading}>{loading ? "Wait.." : "Sign in"}</button>
+                        <a>Don't have an account? <span onClick={(e) => { e.stopPropagation(); setShowLogin(false) }}>Sign up</span> </a>
                     </form>
                 </AuthenticationContainer>
 
@@ -52,8 +156,13 @@ export default function AccountComponent() {
                         <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPassword} set_input_value={(e) => setRegisterPassword(e)} type={"password"} name={"password"} is_required={true} placeholder={"Password"} content_reveal={"false"} />
                         <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPassword2} set_input_value={(e) => setRegisterPassword2(e)} type={"password"} name={"password2"} is_required={true} placeholder={"Confirm Password"} content_reveal={"false"} />
                         <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPhone} set_input_value={(e) => setRegisterPhone(e)} type={"number"} name={"phone"} is_required={true} placeholder={"Phone"} content_reveal={"false"} max={10} />
-                        <button>Sign up</button>
-                        <a>Have an account? <span onClick={(e)=>  setShowLogin(true)}>Sign in</span> </a>
+                        <div className="postal-container">
+                            <p>City: {registerCity}</p>
+                            <input onKeyDown={handleKeyPress} minLength={8} value={postalCode} onChange={(e) => formatPostalCode(e.target.value)} className="postal" required type="text" placeholder="Postal Code" id="postal" name="postal" />
+                            <button disabled={loadingPostal} onClick={searchCEP} className="search-btn" type="button"><BsSearch /></button>
+                        </div>
+                        <button disabled={loading}>{loading ? "Wait.." : "Sign up"}</button>
+                        <a>Have an account? <span onClick={(e) => setShowLogin(true)}>Sign in</span> </a>
                     </form>
                 </AuthenticationContainer>
             }
@@ -78,7 +187,7 @@ const AuthenticationContainer = styled.section`
     background-color: white;
     width: 100%;
     max-width: 500px;
-    max-height: 500px;
+    max-height: 550px;
     height: fit-content;
     padding: 20px;
     border-radius: 25px;
@@ -88,6 +197,52 @@ const AuthenticationContainer = styled.section`
     flex-direction: column;
     background-image: url("/authentication-image.png");
     background-size: cover;
+    .postal-container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        p{
+            width: 100%;
+            max-width: 250px;
+            color: white;
+        }
+        .postal{
+            width: 100%;
+            border-radius: 5px;
+            border: 0;
+            padding-left: 20px;
+            height: 40px;
+            max-width: 150px;
+
+            &:focus{
+                outline: 0;
+            }
+        }
+
+        button{
+            transition: all 200ms;
+            height: 40px;
+            width: 40px;
+            max-width: 40px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+           &:enabled{
+            &:hover{
+                background-color: red;
+                color: white;
+            }
+           }
+
+           &:disabled{
+            background-color: #3d0a0a;
+           }
+        }
+    }
+    
     h1{
         color: black;
         font-size: 40px;
@@ -129,11 +284,16 @@ const AuthenticationContainer = styled.section`
         color: white;
         height: 40px;
         font-size: 20px;
+        transition: all 200ms;
+        border: 1px solid transparent;
         &:hover{
             background-color: white;
             color: red;
             border: 1px solid red;
         }
+        &:disabled{
+            background-color: #3d0a0a;
+           }
     }
 
 `;

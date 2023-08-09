@@ -32,7 +32,7 @@ export default function Header() {
             title: 'Logout',
             color:"white",
             text: 'Are you sure?',
-            imageUrl: '/areusure.gif',
+            imageUrl: `/areusure.gif?random=${Date.now()}`,
             imageWidth: 300,
             imageHeight: 200,
             width:300,
