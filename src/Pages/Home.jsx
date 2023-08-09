@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import FilterComponent from "../Components/FilterComponent";
 import IntroSearch from "../Components/IntroSearch";
+import ServicesComponent from "../Components/ServicesComponent";
 
 export default function Home()
 {
@@ -8,6 +9,7 @@ export default function Home()
         <PageContainer>
             <FilterComponent/>
             <IntroSearch/>
+            <ServicesComponent/>
         </PageContainer>
     );
 }
