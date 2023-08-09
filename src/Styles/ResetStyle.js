@@ -48,8 +48,11 @@ html, body, span, applet, object, iframe,
 
     body,html{
         min-height: 100%;
-        background-color: black ;
+        background-color: transparent;
     }
+	body{
+		background-color: black;
+	}
 
     #root{
         min-height: 100%;
@@ -72,7 +75,7 @@ html, body, span, applet, object, iframe,
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1;
+        z-index: -1;
         background: url("/background5.png");
         background-repeat: no-repeat;
         background-size: cover;

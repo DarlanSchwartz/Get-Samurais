@@ -58,9 +58,9 @@ export default function Header() {
         <HeaderContainer>
             <Content>
                 <Logo />
-                <SearchBar>
+                {/* <SearchBar>
                     {user && <input value={searchText} onChange={(e) => setSearchText(e.target.value)} title="Search for samurai services" type="text" required placeholder="Search.." name="search" id="search" />}
-                </SearchBar>
+                </SearchBar> */}
                 <Actions>
                     {user ?
                         <>

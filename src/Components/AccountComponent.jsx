@@ -286,10 +286,12 @@ const AuthenticationContainer = styled.section`
         font-size: 20px;
         transition: all 200ms;
         border: 1px solid transparent;
-        &:hover{
+        &:enabled{
+            &:hover{
             background-color: white;
             color: red;
             border: 1px solid red;
+        }
         }
         &:disabled{
             background-color: #3d0a0a;

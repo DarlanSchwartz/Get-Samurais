@@ -51,7 +51,6 @@ const Container = styled.section`
     gap: 10px;
     align-items: center;
     justify-content: center;
-    background-color: #1f1f1f;
     height: 100px;
     box-shadow: 10px 10px 20px rgba(8, 8, 8, 1);
 `;
