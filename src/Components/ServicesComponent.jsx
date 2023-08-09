@@ -7,7 +7,7 @@ export default function ServicesComponent()
         <SCServicesComponent>
             <h1>Services</h1>
             <ContainerServices>
-                <ServiceItem name={"Carpentry"} category={"Home"} owner={"Lenhador vara longa"}/>
+                <ServiceItem name={"Carpentry"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"}/>
                 <ServiceItem/>
                 <ServiceItem/>
                 <ServiceItem/>
@@ -34,6 +34,8 @@ const ContainerServices = styled.div`
     border-radius: 20px;
     width: 100%;
     padding: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 `;
 
 const SCServicesComponent = styled.section`

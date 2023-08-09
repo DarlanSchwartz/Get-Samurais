@@ -1,8 +1,24 @@
 import { styled } from "styled-components";
 import { BsFillPersonFill} from "react-icons/bs";
+import { useContext, useEffect } from "react";
+import UserContext from "../Contexts/UserContext";
+import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 
-export default function ServiceItem({name, owner,description, category, photo, price})
+export default function ServiceItem({name, owner,description, category, photo, price, location})
 {
+    const {user} = useContext(UserContext);
+
+    useEffect(()=>{
+        if(!user || !location) return;
+        distanceBetweenLocations(user.city_name, location)
+        .then(distance => {
+          console.log(`A distância entre as duas localizações é aproximadamente ${distance} km.`);
+        })
+        .catch(error => {
+          console.error('Erro ao calcular distância:', error);
+        });
+    },[])
+
     return(
         <Container>
             <ServiceImage>
@@ -16,6 +32,7 @@ export default function ServiceItem({name, owner,description, category, photo, p
                     {category ? category : "All"}
                 </h6>
                 <h6><BsFillPersonFill/>{owner ? owner : "Owner name"}</h6>
+                <h3></h3>
             </Banner>
         </Container>
     );
@@ -26,6 +43,7 @@ width: 100%;
 height: 100%;
 img{
     width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 `;

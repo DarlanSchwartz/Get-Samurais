@@ -17,7 +17,13 @@ const SCategoryItem = styled.div`
     justify-content: center;
     flex-direction: column;
     height: 100%;
+    @media (max-width: 900px) {
+        height: 50%;
+        max-width: 50px;
+        flex: 1 1 calc(16.666% - 10px);
+    }
     width: 100%;
+    min-width: 50px;
     max-width: 115px;
     
     background-color: ${(props)=> props.$selected ? "#6b6b6b" : "transparent"};
@@ -25,10 +31,17 @@ const SCategoryItem = styled.div`
         text-align: center;
         margin-top: 10px;
         color: white;
+        @media (max-width: 900px) {
+            display: none;
+        }
     }
     img{
         width: 100%;
         max-width: 50px;
+
+        @media (max-width: 900px) {
+            max-width: 30px;
+        }
     }
 
     &:hover{
