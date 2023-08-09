@@ -7,20 +7,23 @@ import UserContext from './Contexts/UserContext';
 import Background from './Components/Background';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewService from './Components/ViewService';
 
 
 export default function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({name:"Darlan", city_name:"Novo Hamburgo"});
   const [searchText, setSearchText] = useState("");
   const [showAuthenticate, setShowAuthenticate] = useState(false);
+  const [showService, setShowService] = useState(false);
   const [currentFilter,setCurrentFilter] =useState("All");
 
   return (
-    <UserContext.Provider value={{ user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter }}>
+    <UserContext.Provider value={{ user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter,showService, setShowService }}>
       <BrowserRouter>
         <Header />
         <Background />
         <ToastContainer/>
+       {showService &&  <ViewService/>}
         <Routes>
           <Route path='/' element={<Home />} />
         </Routes>

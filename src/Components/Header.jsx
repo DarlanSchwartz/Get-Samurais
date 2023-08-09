@@ -41,7 +41,7 @@ export default function Header() {
             confirmButtonColor:"lightgray",
             showCancelButton: true,
             imageAlt: 'Custom image',
-            background:"rgba(255,255,255,0.1)",
+            background:"rgba(0,0,0,0.8)",
           }).then(result =>{
             if(result.isConfirmed)
             {
@@ -66,7 +66,7 @@ export default function Header() {
                         <>
                             <a className="user-btn">
                                 <img src="/login.png" alt="" />
-                                <p>Hi Samurai</p>
+                                <p>Hi {user.name}</p>
                             </a>
                             <a className="logout-btn" onClick={askLogout}>
                                 <MdLogout />

@@ -1,28 +1,28 @@
 import { styled } from "styled-components";
-import { BsFillPersonFill} from "react-icons/bs";
+import { BsFillPersonFill } from "react-icons/bs";
 import { useContext, useEffect } from "react";
 import UserContext from "../Contexts/UserContext";
 import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 
-export default function ServiceItem({name, owner,description, category, photo, price, location})
-{
-    const {user} = useContext(UserContext);
+export default function ServiceItem({ name, owner, description, category, photo, price, location, available }) {
+    const { user, showService, setShowService } = useContext(UserContext);
 
-    useEffect(()=>{
-        if(!user || !location) return;
+    useEffect(() => {
+        if (!user || !location) return;
         distanceBetweenLocations(user.city_name, location)
-        .then(distance => {
-          console.log(`A distância entre as duas localizações é aproximadamente ${distance} km.`);
-        })
-        .catch(error => {
-          console.error('Erro ao calcular distância:', error);
-        });
-    },[])
+            .then(distance => {
+                console.log(`A distância entre as duas localizações é aproximadamente ${distance} km.`);
+            })
+            .catch(error => {
+                console.error('Erro ao calcular distância:', error);
+            });
+    }, [])
 
-    return(
-        <Container>
+    return (
+        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available })}>
             <ServiceImage>
                 <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />
+                {!available && <img className="not-available" src="/not-available.png" alt="" /> }
             </ServiceImage>
             <Banner className="banner">
                 <h1>{name ? name : "Service name"} <span>{price ? price : "$ 0"}</span></h1>
@@ -31,8 +31,7 @@ export default function ServiceItem({name, owner,description, category, photo, p
                     <img src={`/filter/${category ? category : "All"}.svg`} alt="" />
                     {category ? category : "All"}
                 </h6>
-                <h6><BsFillPersonFill/>{owner ? owner : "Owner name"}</h6>
-                <h3></h3>
+                <h6><BsFillPersonFill />{owner ? owner : "Owner name"}</h6>
             </Banner>
         </Container>
     );
@@ -41,6 +40,17 @@ export default function ServiceItem({name, owner,description, category, photo, p
 const ServiceImage = styled.div`
 width: 100%;
 height: 100%;
+overflow: hidden;
+position: relative;
+
+.not-available{
+    width: 102%;
+    height: 102%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 img{
     width: 100%;
     height: 100%;
@@ -99,7 +109,7 @@ const Container = styled.div`
 position: relative;
 width: 370px;
 height: 250px;
-background-color: white;
+background-color: transparent;
 border-radius: 20px;
 overflow: hidden;
 cursor: pointer;

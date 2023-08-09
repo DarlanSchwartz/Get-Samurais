@@ -24,7 +24,7 @@ export default async function distanceBetweenLocations(from, to) {
         return distance_1.toFixed(2);
     } catch (error) {
         console.log('Erro ao buscar coordenadas:', error);
-        return 'Erro';
+        return 'Unknown';
     }
   }
   

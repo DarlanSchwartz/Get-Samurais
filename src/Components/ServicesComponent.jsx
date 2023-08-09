@@ -7,15 +7,20 @@ export default function ServicesComponent()
         <SCServicesComponent>
             <h1>Services</h1>
             <ContainerServices>
-                <ServiceItem name={"Carpentry"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"}/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
-                <ServiceItem/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={false} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={false} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/authentication-image.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}/>
+            
             </ContainerServices>
         </SCServicesComponent>
     );
@@ -27,7 +32,7 @@ const ContainerServices = styled.div`
     align-items: center;
     justify-content: center;
     gap: 20px;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(0,0,0,0.2);
     height: 100%;
     min-height: 400px;
     max-height: 2000px;
