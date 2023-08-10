@@ -70,7 +70,7 @@ export default function ViewService() {
     return (
         <LoginModal onClick={(e) => { setShowService(null); e.stopPropagation() }}>
             <Container onClick={(e) => e.stopPropagation()}>
-                {owner_id == user.id &&
+                {user && owner_id == user.id &&
                     <Actions>
                         <BiSolidEdit title="edit" onClick={(e) => {
                             e.stopPropagation();
