@@ -21,7 +21,7 @@ export default function ViewService() {
         if (!user || !location) return;
         distanceBetweenLocations(user.city_name, location)
             .then((dist) => {
-                console.log(user.city_name, location)
+                //console.log(user.city_name, location)
                 setDistance(dist);
             })
             .catch((err) => {
@@ -81,11 +81,11 @@ export default function ViewService() {
                     </Actions>
                 }
                 <div className="left">
-                    <h1>{name}</h1>
+                    <h1> {name}</h1>
                     <p>{description}</p>
                     <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
-                    <h1><BsFillPersonFill />{owner}</h1>
-                    {user && <p>{Number(distance) < 1 ? "This Samurai is your neighbor" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
+                    <h1><BsFillPersonFill />Samurai: {owner}</h1>
+                    {user && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
                 </div>
                 <div className="right">
 

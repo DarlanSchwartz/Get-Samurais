@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import UserContext from "../Contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-export default function CreateService() {
+export default function EditService() {
     const {user,categories} = useContext(UserContext);
     const navigate = useNavigate();
     const defaultPhotoPlaceholder = "/placeholder.png";
@@ -15,14 +15,23 @@ export default function CreateService() {
     const categoryRef = useRef();
     const priceRef = useRef();
     const descriptionRef = useRef();
+    
+    const state = useLocation().state;
 
     const [currentPhotoPreview, setCurrentPhotoPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     useEffect(()=>{
-        //BUG
-        if(!localStorage.getItem("token")) return navigate('/');
+        photoRef.current.value = state.showService.photo;
+        nameRef.current.value = state.showService.name;
+        categoryRef.current.value = state.showService.category;
+        priceRef.current.value = parseInt(state.showService.price.replace('$',''));
+        descriptionRef.current.value = state.showService.description;
+
+        if(!localStorage.getItem("token") || !state.showService) return navigate('/');
     },[])
-    /*{ name, owner, , category, , , location, available }*/
+
+
+    
 
     async function seePreview() {
         await validateUrl(photoRef.current.value)
@@ -80,10 +89,10 @@ export default function CreateService() {
             available:true
         }
 
-        axios.post(`${import.meta.env.VITE_API_URL}/create-service`,service,{headers:{Authorization:localStorage.getItem("token")}})
+        axios.put(`${import.meta.env.VITE_API_URL}/service/${state.showService.service_id}`,service,{headers:{Authorization:localStorage.getItem("token")}})
         .then((res)=>{
 
-            toast.success('⚔ Created service sucess ⚔', {
+            toast.success('⚔ Updated service sucess ⚔', {
                 position: "bottom-left",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -105,7 +114,7 @@ export default function CreateService() {
 
     return (
         <PageContainer>
-            <h1>Create service</h1>
+            <h1>Edit service</h1>
             <CreationComponent onSubmit={createService}>
                 <div className="main-info">
                     <div className="input-container">
@@ -141,7 +150,7 @@ export default function CreateService() {
                     </select>
                 </div>
 
-                <button disabled={loading} >{loading ? "Wait.." : "Create"}</button>
+                <button disabled={loading} >{loading ? "Wait.." : "Update"}</button>
             </CreationComponent>
         </PageContainer>
     );

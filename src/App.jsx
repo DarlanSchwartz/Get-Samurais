@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ViewService from './Components/ViewService';
 import axios from 'axios';
 import CreateService from './Pages/CreateService';
+import EditService from './Pages/EditService';
 
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
     const tokenValue = token ? token : localStorage.getItem("token");
       axios.get(`${import.meta.env.VITE_API_URL}/users/me`,{headers:{Authorization:tokenValue}})
       .then(res =>{
-        console.log(res.data);
+        //console.log(res.data);
         setUser(res.data)
       })
       .catch(error =>{
@@ -58,7 +59,7 @@ export default function App() {
     axios.get(`${import.meta.env.VITE_API_URL}/services`)
     .then(res => {
         setServices(res.data);
-        console.log(res.data);
+        //console.log(res.data);
     }).catch(error => {
 
     });
@@ -74,6 +75,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/create-service' element={<CreateService />} />
+          <Route path='/edit-service/:id' element={<EditService />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
