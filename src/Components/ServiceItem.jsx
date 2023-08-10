@@ -1,25 +1,14 @@
 import { styled } from "styled-components";
 import { BsFillPersonFill } from "react-icons/bs";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import UserContext from "../Contexts/UserContext";
-import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 
-export default function ServiceItem({ name, owner, description, category, photo, price, location, available }) {
-    const { user, showService, setShowService } = useContext(UserContext);
+export default function ServiceItem({ name, owner, description, category, photo, price, location, available,owner_id,service_id }) {
+    const { setShowService } = useContext(UserContext);
 
-    useEffect(() => {
-        if (!user || !location) return;
-        distanceBetweenLocations(user.city_name, location)
-            .then(distance => {
-                console.log(`A distância entre as duas localizações é aproximadamente ${distance} km.`);
-            })
-            .catch(error => {
-                console.error('Erro ao calcular distância:', error);
-            });
-    }, [])
 
     return (
-        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available })}>
+        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available,owner_id,service_id })}>
             <ServiceImage>
                 <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />
                 {!available && <img className="not-available" src="/not-available.png" alt="" /> }

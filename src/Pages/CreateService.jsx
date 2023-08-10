@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 export default function CreateService() {
-    const {user} = useContext(UserContext);
+    const {user,categories} = useContext(UserContext);
     const navigate = useNavigate();
     const defaultPhotoPlaceholder = "/placeholder.png";
     const photoRef = useRef();
@@ -19,7 +19,8 @@ export default function CreateService() {
     const [currentPhotoPreview, setCurrentPhotoPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     useEffect(()=>{
-        if(!user) return navigate('/');
+        //BUG
+        if(!localStorage.getItem("token")) return navigate('/');
     },[])
     /*{ name, owner, , category, , , location, available }*/
 
@@ -71,9 +72,9 @@ export default function CreateService() {
          
         const service ={
             name: nameRef.current.value, 
-            owner:user.name, 
+            ownerId:user.id, 
             description:descriptionRef.current.value, 
-            category:categoryRef.current.value, 
+            category:categories.indexOf(categoryRef.current.value), 
             photo:photoRef.current.value,
             price:Number(priceRef.current.value), 
             available:true
@@ -97,7 +98,7 @@ export default function CreateService() {
                 setLoading(false);
 
         }).catch(error =>{
-            
+            console.log(error.response);
             setLoading(false);
         });
     }
@@ -128,6 +129,16 @@ export default function CreateService() {
                 <div className="input-container">
                     <label htmlFor="description">Description</label>
                     <textarea ref={descriptionRef} required id="description" name="description" type="text" placeholder="e.g I make clothes for almost 10 years, i am good!" maxLength={400} />
+                </div>
+
+                <div className="input-container">
+                    <label htmlFor="category">Category</label>
+                    <select ref={categoryRef} name="category" id="category">
+                        {categories.map((category)=>{
+                           if(category !== "All")  return <option key={category} value={category}>{category}</option>
+                        })}
+                       
+                    </select>
                 </div>
 
                 <button disabled={loading} >{loading ? "Wait.." : "Create"}</button>
@@ -206,6 +217,17 @@ const CreationComponent = styled.form`
         color: white;
         gap: 10px;
         width: 100%;
+        select{
+            height: 40px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 0;
+            padding-left: 10px;
+            &:focus{
+                outline: 0;
+            }
+        }
         input,textarea{
             border-radius: 10px;
             padding-left: 20px;

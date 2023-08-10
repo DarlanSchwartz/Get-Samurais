@@ -5,26 +5,14 @@ import CategoryItem from "./CategoryItem";
 
 export default function FilterComponent() {
 
-    const { currentFilter, setCurrentFilter } = useContext(UserContext);
+    const { currentFilter, setCurrentFilter, categories } = useContext(UserContext);
 
-    const imageNames = [
-        "All",
-        "TI",
-        "Lessons",
-        "Autos",
-        "Consultancies",
-        "Tech",
-        "Events",
-        "Fashion",
-        "Repairs",
-        "Health",
-        "Home"
-    ];
+   
 
     return (
         <Container>
             <Content>
-                {imageNames.map((imgName,index) => {
+                {categories.map((imgName,index) => {
                     return (
                         <CategoryItem src={`/filter/${imgName}.svg`} name={imgName} set_filter={setCurrentFilter} cur_filter={currentFilter} key={index}/>
                     );

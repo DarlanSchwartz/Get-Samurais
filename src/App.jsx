@@ -18,24 +18,54 @@ export default function App() {
   const [showAuthenticate, setShowAuthenticate] = useState(false);
   const [showService, setShowService] = useState(false);
   const [currentFilter,setCurrentFilter] =useState("All");
+  const [services, setServices] = useState();
+
+  const categories = [
+    "All",
+    "TI",
+    "Lessons",
+    "Autos",
+    "Consultancies",
+    "Tech",
+    "Events",
+    "Fashion",
+    "Repairs",
+    "Health",
+    "Home"
+];
 
   useEffect(()=>{
     getUserInfo();
+    getServices();
   },[])
 
   function getUserInfo(token)
   {
     const tokenValue = token ? token : localStorage.getItem("token");
       axios.get(`${import.meta.env.VITE_API_URL}/users/me`,{headers:{Authorization:tokenValue}})
-      .then(res => setUser(res.data))
+      .then(res =>{
+        console.log(res.data);
+        setUser(res.data)
+      })
       .catch(error =>{
         console.log(error.response.data);
       });
     
   }
 
+  function getServices()
+  {
+    axios.get(`${import.meta.env.VITE_API_URL}/services`)
+    .then(res => {
+        setServices(res.data);
+        console.log(res.data);
+    }).catch(error => {
+
+    });
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter,showService, setShowService,getUserInfo }}>
+    <UserContext.Provider value={{getServices,services, setServices,categories, user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter,showService, setShowService,getUserInfo }}>
       <BrowserRouter>
         <Header />
         <Background />

@@ -1,29 +1,43 @@
 import { styled } from "styled-components";
 import ServiceItem from "./ServiceItem";
+import { useContext, useEffect } from "react";
+import UserContext from "../Contexts/UserContext";
 
 export default function ServicesComponent() {
+    const { categories,services,getServices } = useContext(UserContext);
+    useEffect(()=>{
+        getServices();
+    },[])
     return (
         <SCServicesComponent>
             <div className="header">
-            <h1>Services</h1>
-            <a href="/create-service">
-                <button>Create Service</button>
-            </a>
+                <h1>Services</h1>
+                <a href="/create-service">
+                    <button>Create Service</button>
+                </a>
             </div>
             <ContainerServices>
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"https://www.digitalmomblog.com/wp-content/uploads/2020/12/monkey-memes-2022-1.jpeg"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={false} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={false} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
-                <ServiceItem available={true} location={"São Paulo"} price={0} name={"Name"} category={"Home"} owner={"Lenhador vara longa"} photo={"/logo.png"} description={"Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"} />
+                {services &&
+
+                    services.map((service) => {
+                        return (
+                            <ServiceItem
+                                service_id={service.id}
+                                key={service.id}
+                                owner_id={service.owner_id}
+                                description={service.description}
+                                available={service.available}
+                                location={service.city_name}
+                                price={service.price}
+                                name={service.name}
+                                category={categories[service.category]}
+                                owner={service.owner_name}
+                                photo={service.photo}
+                            />
+                        );
+                    })
+
+                }
             </ContainerServices>
         </SCServicesComponent>
     );
@@ -54,6 +68,10 @@ const SCServicesComponent = styled.section`
     width: 100%;
     max-width: 1200px;
     margin-top: 40px;
+
+    @media (max-width:1250px) {
+    max-width: calc(100% - 40px);
+}
 
     .header{
         display: flex;

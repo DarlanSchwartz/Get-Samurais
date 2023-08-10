@@ -36,7 +36,7 @@ export default function Header() {
             imageWidth: 300,
             imageHeight: 200,
             width:300,
-            confirmButtonText:`<p style="color:white">Yes</p>`,
+            confirmButtonText:`<p style="color:black">Yes</p>`,
             cancelButtonColor:"red",
             confirmButtonColor:"lightgray",
             showCancelButton: true,
