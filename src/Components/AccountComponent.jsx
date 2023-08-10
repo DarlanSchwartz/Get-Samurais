@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 export default function AccountComponent() {
-    const { user, setUser, setShowAuthenticate } = useContext(UserContext);
+    const { user, setUser, setShowAuthenticate,getUserInfo } = useContext(UserContext);
     const defaultPostalCode = "Insert postal code";
     const invalidPostalCode = "Invalid postal code";
 
@@ -62,13 +62,14 @@ export default function AccountComponent() {
         setLoading(true);
         axios.post(`${import.meta.env.VITE_API_URL}/signin`, loginObj)
             .then(res => {
+                localStorage.setItem("token",res.data.token);
                 setLoading(false);
                 setShowAuthenticate(false);
-                setUser({name:"dan"});
+                getUserInfo(res.data.token);
             }).catch(error => {
                 Swal.fire({
-                    title: `Error ${error.response.status}`,
-                    text: `${error.response.data}`,
+                    title: `Error ${error.response?.status}`,
+                    text: `${error.response?.data}`,
                     
                     imageUrl:`/oh-no.gif?random=${Date.now()}`,
                     width: 300,
@@ -78,7 +79,7 @@ export default function AccountComponent() {
                     confirmButtonText: 'Ok'
                   });
                 setLoading(false);
-               
+               console.log(error);
             });
     }
 
@@ -239,6 +240,7 @@ const AuthenticationContainer = styled.section`
 
            &:disabled{
             background-color: #3d0a0a;
+            cursor: not-allowed;
            }
         }
     }
@@ -295,6 +297,7 @@ const AuthenticationContainer = styled.section`
         }
         &:disabled{
             background-color: #3d0a0a;
+            cursor: not-allowed;
            }
     }
 

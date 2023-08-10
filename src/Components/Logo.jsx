@@ -26,5 +26,8 @@ const LogoContainer = styled.a`
         font-size: 50px;
         white-space: nowrap;
         font-family: Bonzai;
+        @media (max-width: 500px) {
+            font-size: 40px;
+        }
     }
 `;

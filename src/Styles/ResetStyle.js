@@ -48,6 +48,7 @@ html, body, span, applet, object, iframe,
 
     body,html{
         min-height: 100%;
+		height: 100%;
         background-color: transparent;
     }
 	body{
@@ -55,6 +56,7 @@ html, body, span, applet, object, iframe,
 	}
 
     #root{
+		height: 100%;
         min-height: 100%;
 		position: relative;
         --toastify-color-success: #1f1f1f !important;

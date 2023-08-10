@@ -31,6 +31,9 @@ flex-direction: column;
 width: 100%;
 max-width: 1200px;
 margin-top: 50px;
+@media (max-width:1250px) {
+    max-width: calc(100% - 40px);
+}
 h1,h2{
     color: white;
 }

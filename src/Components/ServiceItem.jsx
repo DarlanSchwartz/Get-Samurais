@@ -73,6 +73,8 @@ h1{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: white;
+    margin-bottom: 10px;
 
     span{
         font-family: sans-serif;

@@ -73,7 +73,8 @@ export default function Header() {
                             </a>
                         </>
                         :
-                        <a onClick={showLoginPopup} className="login-btn">Login</a>
+                        !localStorage.getItem("token") ?
+                        <a onClick={showLoginPopup} className="login-btn">Login</a> : null
                     }
 
                 </Actions>
@@ -91,6 +92,10 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 gap: 15px;
+
+@media (max-width: 450px) {
+    gap: 0;
+}
 
 .login-btn,.logout-btn{
     cursor: pointer;
@@ -125,6 +130,9 @@ gap: 15px;
     gap: 10px;
     img{
         height: 100%;
+        @media (max-width: 450px) {
+            display: none;
+        }
     }
 }
 `;
