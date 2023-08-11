@@ -1,22 +1,27 @@
 
 import { styled } from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../Contexts/UserContext";
 import { BsFillPersonFill } from "react-icons/bs";
 import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiSolidEdit } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
-import {AiFillQuestionCircle, AiFillCheckCircle} from "react-icons/ai";
+import { AiFillQuestionCircle, AiFillCheckCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
 import StarRating from "./StarRating";
+import Reviews from "./Reviews";
 
 export default function ViewService() {
 
-    const { showService, setShowService, user , getServices } = useContext(UserContext);
-    const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating } = showService;
+    const { showService, setShowService, user, getServices } = useContext(UserContext);
+    const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews } = showService;
+    const reviewRef = useRef();
     const [distance, setDistance] = useState();
+    const [loading, setLoading] = useState(false);
+    const [reviewRating, setReviewRating] = useState(1);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -53,6 +58,35 @@ export default function ViewService() {
         })
     }
 
+    function publishReview()
+    {
+        if(!user || !reviewRef.current || reviewRef.current.value == "") return;
+        const review = {
+            review_text:reviewRef.current.value,
+            rating:reviewRating,
+            service_id:service_id,
+            writer_id:user.id,
+        };
+        setLoading(true);
+        axios.post(`${import.meta.env.VITE_API_URL}/service/review/new`,review,{ headers: { Authorization: localStorage.getItem("token") } })
+        .then(res => {
+            getServices();
+            setLoading(false);
+            console.log("ok");
+        }).catch(error => {
+            Swal.fire({
+                title: `Error ${error.response ? error.response.status : ""}`,
+                text: `${error.response ? error.response.data : "Something went wrong"}`,
+                icon: 'error',
+                width: 300,
+                confirmButtonColor: "red",
+                confirmButtonText: 'Ok'
+            });
+            console.log(error);
+            setLoading(false);
+        });
+    }
+
     function deleteService() {
         axios.delete(`${import.meta.env.VITE_API_URL}/service/${service_id}`, { headers: { Authorization: localStorage.getItem("token") } })
             .then(res => {
@@ -65,7 +99,7 @@ export default function ViewService() {
                     width: 300,
                     confirmButtonColor: "red",
                     confirmButtonText: 'Ok'
-                  });
+                });
             });
     }
 
@@ -82,24 +116,39 @@ export default function ViewService() {
                         <BsFillTrashFill title="delete" onClick={askDeleteService} />
                     </Actions>
                 }
-                <div className="left">
-                    <h1> {name}</h1>
-                    <p>{description}</p>
-                    <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
-                    <h1><BsFillPersonFill />Samurai: {user && owner_id == user.id ? "You" : owner}</h1>
-                    {(user && owner_id !== user.id) && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
-                    <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
+                <div className="main">
+                    <div className="left">
+                        <h1> {name}</h1>
+                        <p>{description}</p>
+                        <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
+                        <h1><BsFillPersonFill />Samurai: {user && owner_id == user.id ? "You" : owner}</h1>
+                        {(user && owner_id !== user.id) && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
+                        <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
+                    </div>
+                    <div className="right">
+
+                        <img src={photo} alt="" />
+                        <div className="actions">
+                            <button><AiFillQuestionCircle /> Ask something</button>
+                            <button><AiFillCheckCircle /> Hire</button>
+                        </div>
+                        <div className="rating">
+                            <StarRating initialRating={rating} />
+                        </div>
+                    </div>
                 </div>
-                <div className="right">
-                    
-                    <img src={photo} alt="" />
-                    <div className="actions">
-                        <button><AiFillQuestionCircle/> Ask something</button>
-                        <button><AiFillCheckCircle/> Hire</button>
-                    </div>
-                    <div className="rating">
-                        <StarRating interactable={true} initialRating={rating}/>
-                    </div>
+                <div className="bottom">
+                    <h1>Reviews</h1>
+                    <Reviews reviews={reviews} />
+                    {!reviews || reviews && reviews.length == 0 ? <p>No reviews yet, write the first review!</p> : undefined}
+                    {user &&
+                        <>
+                            <label htmlFor="write-review">Write your own review </label>
+                            <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
+                            <textarea ref={reviewRef} type="text" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis aliquid id iste nulla quos nobis officiis dolorum voluptates tempore praesentium similique totam laborum veniam, facilis beatae. Fugit nobis ea quam?" />
+                            <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}</button>
+                        </>
+                    }
                 </div>
             </Container>
         </LoginModal>
@@ -127,14 +176,85 @@ const Actions = styled.nav`
 
 const Container = styled.div`
     width: 100%;
-    height:  100%;
-    max-height: 330px;
+    height: fit-content;
     max-width: 900px;
     border-radius: 30px;
     background-color: rgba(0,0,0,0.8);
     padding: 20px;
     display: flex;
+    flex-direction: column;
     position: relative;
+    
+    .main{
+        display: flex;
+        height: 100%;
+        max-height: 330px;
+    }
+
+    .bottom{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        button{
+            background-color: red;
+            color: white;
+            border-radius: 5px;
+            font-size: 15px;
+            width: fit-content;
+            border: 0;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            &:hover{
+                color: red;
+                background-color: white;
+            }
+        }
+        textarea{
+            height: 90px;
+            resize: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: black;
+            border: 0;
+            &::-webkit-scrollbar {
+                width: 10px; 
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: red; 
+                border-radius: 3px; 
+            }
+
+            &:focus{
+                outline: none;
+            }
+
+          
+        }
+        h2{
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap : 20px ;
+            justify-content: flex-end;
+        }
+        label{
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          
+        }
+        h1{
+            font-size: 30px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid white;
+        }
+    }
 
     *{
         color: white;
@@ -148,6 +268,8 @@ const Container = styled.div`
     .left,.right{
         width: 100%;
         max-width: 50%;
+        height: 100%;
+        max-height: 330px;
     }
 
     .left{
