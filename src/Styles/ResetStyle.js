@@ -53,6 +53,14 @@ html, body, span, applet, object, iframe,
     }
 	body{
 		background-color: black;
+
+		&::-webkit-scrollbar {
+			width: 10px; /* Largura da barra de rolagem */
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: red; /* Cor do handle */
+			border-radius: 3px; /* Borda arredondada do handle */
+		}
 	}
 
     #root{

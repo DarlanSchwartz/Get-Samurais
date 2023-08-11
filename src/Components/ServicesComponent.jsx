@@ -35,6 +35,7 @@ export default function ServicesComponent() {
                                 category={categories[service.category]}
                                 owner={service.owner_name}
                                 photo={service.photo}
+                                rating={Math.floor(Math.random() * 6)}
                             />
                         );
                     })

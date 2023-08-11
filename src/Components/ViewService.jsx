@@ -10,11 +10,12 @@ import { useNavigate } from "react-router-dom";
 import {AiFillQuestionCircle, AiFillCheckCircle} from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
+import StarRating from "./StarRating";
 
 export default function ViewService() {
 
     const { showService, setShowService, user , getServices } = useContext(UserContext);
-    const { name, owner, description, category, photo, price, location, available, owner_id, service_id } = showService;
+    const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating } = showService;
     const [distance, setDistance] = useState();
     const navigate = useNavigate();
 
@@ -95,6 +96,9 @@ export default function ViewService() {
                     <div className="actions">
                         <button><AiFillQuestionCircle/> Ask something</button>
                         <button><AiFillCheckCircle/> Hire</button>
+                    </div>
+                    <div className="rating">
+                        <StarRating interactable={true} initialRating={rating}/>
                     </div>
                 </div>
             </Container>
@@ -177,6 +181,19 @@ const Container = styled.div`
         overflow: hidden;
         position: relative;
         border-radius: 20px;
+        .rating{
+            position: absolute;
+            right: 0;
+            top: 0;
+            border-bottom-left-radius: 20px;
+            height: 30px;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content:flex-end;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+        }
         .actions{
             position: absolute;
             left: 0;

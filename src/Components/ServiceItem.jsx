@@ -2,16 +2,18 @@ import { styled } from "styled-components";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useContext } from "react";
 import UserContext from "../Contexts/UserContext";
+import StarRating from "./StarRating";
 
-export default function ServiceItem({ name, owner, description, category, photo, price, location, available,owner_id,service_id }) {
+export default function ServiceItem({ name, owner, description, category, photo, price, location, available,owner_id,service_id,rating }) {
     const { setShowService } = useContext(UserContext);
 
 
     return (
-        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available,owner_id,service_id })}>
+        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available,owner_id,service_id,rating })}>
+            {/* <StarRating initialRating={rating}/> */}
             <ServiceImage>
                 <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />
-                {!available && <img className="not-available" src="/not-available.png" alt="" /> }
+                {!available && <img className="not-available" src="/not-available.png" alt="" /> }  
             </ServiceImage>
             <Banner className="banner">
                 <h1>{name ? name : "Service name"} <span>{price ? price : "$ 0"}</span></h1>
@@ -19,8 +21,10 @@ export default function ServiceItem({ name, owner, description, category, photo,
                 <h6>
                     <img src={`/filter/${category ? category : "All"}.svg`} alt="" />
                     {category ? category : "All"}
+                    
                 </h6>
                 <h6><BsFillPersonFill />{owner ? owner : "Owner name"}</h6>
+                <h5>Rating: <StarRating size="20px" initialRating={rating}/></h5>
             </Banner>
         </Container>
     );
@@ -55,7 +59,11 @@ background-color: rgba(0,0,0,0.5);
 position: absolute;
 left: 0;
 bottom: 0;
+z-index: 2;
 padding: 10px;
+display: flex;
+flex-direction: column;
+gap: 10px;
 overflow: hidden;
 h1{
     font-size: 35px !important;
@@ -81,7 +89,7 @@ p{
     overflow: hidden;
 }
 
-h6{
+h6,h5{
     display: flex;
     gap: 10px;
     align-items: center;
@@ -105,6 +113,9 @@ background-color: transparent;
 border-radius: 20px;
 overflow: hidden;
 cursor: pointer;
+
+.star-rating{
+}
 
 &:hover{
     .banner{
