@@ -11,6 +11,7 @@ import ViewService from './Components/ViewService';
 import axios from 'axios';
 import CreateService from './Pages/CreateService';
 import EditService from './Pages/EditService';
+import Footer from './Components/Footer';
 
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
           <Route path='/create-service' element={<CreateService />} />
           <Route path='/edit-service/:id' element={<EditService />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </UserContext.Provider>
   )

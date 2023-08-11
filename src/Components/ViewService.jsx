@@ -7,6 +7,7 @@ import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiSolidEdit } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
+import {AiFillQuestionCircle, AiFillCheckCircle} from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -18,7 +19,7 @@ export default function ViewService() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user || !location) return;
+        if (!user || !location || (user && owner_id == user.id)) return;
         distanceBetweenLocations(user.city_name, location)
             .then((dist) => {
                 //console.log(user.city_name, location)
@@ -84,15 +85,16 @@ export default function ViewService() {
                     <h1> {name}</h1>
                     <p>{description}</p>
                     <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
-                    <h1><BsFillPersonFill />Samurai: {owner}</h1>
-                    {user && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
+                    <h1><BsFillPersonFill />Samurai: {user && owner_id == user.id ? "You" : owner}</h1>
+                    {(user && owner_id !== user.id) && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
+                    <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
                 </div>
                 <div className="right">
-
-                    {available && <button> Hire</button>}
+                    
                     <img src={photo} alt="" />
-                    <div className="info">
-                        <p>{available ? "Price: " + price : "Service currently not available"}</p>
+                    <div className="actions">
+                        <button><AiFillQuestionCircle/> Ask something</button>
+                        <button><AiFillCheckCircle/> Hire</button>
                     </div>
                 </div>
             </Container>
@@ -163,6 +165,11 @@ const Container = styled.div`
         }
         p{
             line-height: 19px;
+
+            span{
+                color: red;
+                font-weight: bold;
+            }
         }
     }
 
@@ -170,30 +177,43 @@ const Container = styled.div`
         overflow: hidden;
         position: relative;
         border-radius: 20px;
-        button{
-            width: 300px;
-            height: 300px;
+        .actions{
             position: absolute;
-            left: -100px;
-            top: -100px;
-            background-color: #ff000050;
-            border-radius: 50%;
-            border: 0;
-            font-size: 40px;
-            padding-left: 80px;
-            padding-top: 80px;
-            border: 1px solid white;
-            &:hover{
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content:flex-end;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+
+                button{
                 background-color: red;
+                border-radius: 5px;
+                height:40px;
+                box-sizing: border-box;
+                flex-shrink: 0;
+                border: 1px solid transparent;
+                font-size: 16px;
+                min-width: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                gap: 10px;
+                &:hover{
+                    background-color: white;
+                    color: red !important;
+                    *{
+                        color: red !important;
+                    }
+                }
             }
         }
-
-        .info{
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            flex-direction: column;
-        }
+        
     }
 `;
 
