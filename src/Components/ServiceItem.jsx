@@ -59,7 +59,7 @@ background-color: rgba(0,0,0,0.5);
 position: absolute;
 left: 0;
 bottom: 0;
-z-index: 2;
+z-index: 1;
 padding: 10px;
 display: flex;
 flex-direction: column;

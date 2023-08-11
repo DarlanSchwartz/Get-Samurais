@@ -172,7 +172,7 @@ export default function AccountComponent() {
 }
 
 const LoginModal = styled.main`
-    z-index: 1;
+    z-index: 7;
     width: 100%;
     height: 100%;
     position: fixed;
