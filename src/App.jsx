@@ -19,7 +19,7 @@ export default function App() {
   const [searchText, setSearchText] = useState("");
   const [showAuthenticate, setShowAuthenticate] = useState(false);
   const [showService, setShowService] = useState(false);
-  const [currentFilter,setCurrentFilter] =useState("All");
+  const [currentFilter,setCurrentFilter] = useState("All");
   const [services, setServices] = useState();
 
   const categories = [

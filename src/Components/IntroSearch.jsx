@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { useContext } from "react";
 import UserContext from "../Contexts/UserContext";
 export default function IntroSearch() {
-    const { searchText, setSearchText} = useContext(UserContext);
+    const { searchText, setSearchText, currentFilter, setCurrentFilter } = useContext(UserContext);
     return (
         <IntroSearchContainer>
             <div className="top">
@@ -16,7 +16,15 @@ export default function IntroSearch() {
                 </div>
             </div>
             <form onSubmit={(e) => e.preventDefault()}>
-                <input required value={searchText} onChange={(e) => setSearchText(e.target.value)} type="text" placeholder="Type your search.." />
+                <input
+                    required
+                    value={searchText}
+                    onChange={(e) => {
+                        setSearchText(e.target.value);
+                        setCurrentFilter("All");
+                    }}
+                    type="text"
+                    placeholder="Type your search.." />
                 <button><BsSearch /></button>
             </form>
         </IntroSearchContainer>

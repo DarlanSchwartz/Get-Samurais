@@ -1,8 +1,6 @@
 export default async function distanceBetweenLocations(from, to) {
     const url1 = `https://nominatim.openstreetmap.org/search?format=json&q=${from}`;
     const url2 = `https://nominatim.openstreetmap.org/search?format=json&q=${to}`;
-  
-    // Retorna a promessa resultante da Promise.all
     try {
         const responses = await Promise.all([fetch(url1), fetch(url2)]);
         const data = await Promise.all(responses.map(response => response.json()));
