@@ -2,9 +2,11 @@ import { styled } from "styled-components";
 import ServiceItem from "./ServiceItem";
 import { useContext, useEffect } from "react";
 import UserContext from "../Contexts/UserContext";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function ServicesComponent() {
     const { categories,services,getServices } = useContext(UserContext);
+    const size = useWindowSize();
     useEffect(()=>{
         getServices();
     },[])
@@ -13,7 +15,7 @@ export default function ServicesComponent() {
             <div className="header">
                 <h1>Services</h1>
                 <a href="/create-service">
-                    <button>Create Service</button>
+                    <button>{size.width <=500 ? "+" : "Create Service"}</button>
                 </a>
             </div>
             <ContainerServices>
@@ -52,7 +54,6 @@ const ContainerServices = styled.div`
     background-color: rgba(0,0,0,0.2);
     height: 100%;
     min-height: 400px;
-    max-height: 2000px;
     border-radius: 20px;
     width: 100%;
     padding: 20px;
@@ -77,6 +78,8 @@ const SCServicesComponent = styled.section`
         display: flex;
         justify-content: space-between;
         width: 100%;
+        align-items: center;
+        margin-bottom: 30px;
         button{
             border: 0;
             background-color: red;
@@ -87,6 +90,10 @@ const SCServicesComponent = styled.section`
             transition: all 200ms;
             border: 1px solid transparent;
             width: 200px;
+            @media (max-width:500px) {
+                border-radius: 50%;
+                width: 40px;
+            }
             &:enabled{
                 &:hover{
                 background-color: white;
@@ -103,7 +110,6 @@ const SCServicesComponent = styled.section`
         h1{
             font-size: 50px;
             color: white;
-            margin-bottom: 30px;
         }
 
     }

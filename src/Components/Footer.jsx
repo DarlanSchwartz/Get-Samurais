@@ -69,14 +69,25 @@ const Content = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 750px) {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 
     .logo{
         height: 90%;
+        @media (max-width: 750px) {
+            display: none;
+        }
     }
 
     .inverted{
         transform: scaleX(-100%);
     }
+
+    
+
+
     ul{
         padding: 10px;
         padding-top: 20px;

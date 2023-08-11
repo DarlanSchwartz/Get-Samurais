@@ -45,7 +45,9 @@ h1{
 
 .top{
     display: flex;
-    
+    @media (max-width: 800px) {
+        position: relative;
+    }
 
     .titles{
         display: flex;
@@ -55,6 +57,10 @@ h1{
         width: 100%;
         max-width: 50%;
         gap: 20px;
+        @media (max-width: 800px) {
+            max-width: 100%;
+            height: 377px;
+        }
     }
 
     .image{
@@ -65,9 +71,19 @@ h1{
         justify-content: center;
 
         img{
-        width: 300px;
-        opacity: 100%;
-    }
+            width: 300px;
+            opacity: 100%;
+        }
+
+        @media (max-width: 800px) {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: -1;
+            filter: blur(2px);
+            pointer-events: none;
+        }
     }
 }
 
