@@ -14,6 +14,8 @@ export default function MyServices() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     useEffect(()=>{
+        console.log(user);
+        getUserInfo();
         if(!localStorage.getItem("token")) return navigate('/');
     },[])
 // name, description, category, photo, price, available = false, service_id =8 
@@ -33,6 +35,9 @@ export default function MyServices() {
                     key={service.id}
                     />
                 })}
+
+                {!user&& <p className="no-services">You should not be here</p>}
+                { user &&  user.services.length == 0 && <p className="no-services">No services to show!</p>}
                 
             </ServicesList>
         </PageContainer>
@@ -53,6 +58,16 @@ const ServicesList = styled.div`
     width: 100%;
     max-width: 800px;
     padding: 20px;
+    position: relative;
+
+    .no-services{
+        color: white;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 30px;
+    }
 `;
 const PageContainer = styled.main`
 

@@ -47,10 +47,13 @@ html, body, span, applet, object, iframe,
 
 
     body,html{
-        min-height: 100%;
-		height: auto;
+        min-height: 100% !important;
+		height: 100% !important;
         background-color: transparent;
     }
+	body.swal2-height-auto {
+		height: 100% !important
+	}
 	body{
 		background-color: black;
 
