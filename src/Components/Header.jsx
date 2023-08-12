@@ -8,12 +8,14 @@ import Swal from "sweetalert2";
 import 'animate.css';
 import { useNavigate } from "react-router-dom";
 import AccountComponent from "./AccountComponent";
-import { useWindowSize } from "@uidotdev/usehooks";
+import { useWindowScroll, useWindowSize } from "@uidotdev/usehooks";
 
 export default function Header() {
 
-    const { user, setUser,showAuthenticate,setShowAuthenticate } = useContext(UserContext);
+    const { user, setUser,showAuthenticate,setShowAuthenticate,searchText,setSearchText } = useContext(UserContext);
     const navigate = useNavigate();
+    const [{ x, y }, scrollTo] = useWindowScroll();
+    const size = useWindowSize();
     
     function logout(){
         localStorage.removeItem('token');
@@ -57,18 +59,18 @@ export default function Header() {
         setShowAuthenticate(true);
     }
     return (
-        <HeaderContainer>
+        <HeaderContainer $y ={y}>
             <Content>
                 <Logo />
-                {/* <SearchBar>
+                {y > 100 && <SearchBar>
                     {user && <input value={searchText} onChange={(e) => setSearchText(e.target.value)} title="Search for samurai services" type="text" required placeholder="Search.." name="search" id="search" />}
-                </SearchBar> */}
+                </SearchBar> }
                 <Actions>
                     {user ?
                         <>
                             <a className="user-btn">
                                 <img src="/login.png" alt="" />
-                                <p>Hi {user.name}</p>
+                                <p>{size.width <=700 ? "" : "Hi" + user.name}</p>
                             </a>
                             <a className="logout-btn" onClick={askLogout}>
                                 <MdLogout />
@@ -95,7 +97,7 @@ justify-content: space-between;
 align-items: center;
 gap: 15px;
 
-@media (max-width: 450px) {
+@media (max-width: 700px) {
     gap: 0;
 }
 
@@ -132,9 +134,6 @@ gap: 15px;
     gap: 10px;
     img{
         height: 100%;
-        @media (max-width: 450px) {
-            display: none;
-        }
     }
 }
 `;
@@ -142,7 +141,7 @@ gap: 15px;
 const SearchBar = styled.form`
     width: 100%;
     max-width: 300px;
-
+box-sizing: content-box;
     input{
         width: 100%;
         max-width: 300px;
@@ -159,6 +158,7 @@ const SearchBar = styled.form`
 const Content = styled.section`
     max-width: 1200px;
     width: 100%;
+    gap: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -172,9 +172,11 @@ const HeaderContainer = styled.header`
     z-index: 2;
     align-items: center;
     justify-content: center;
+
     padding-left: 20px;
     padding-right: 20px;
-    position: absolute;
+    background-color: ${(props) => props.$y > 100 ? "rgba(0,0,0,0.8)" : "transparent"};
+    position: ${(props) => props.$y > 100 ? "fixed" : "static"};
     left: 0;
     top: 0;
 `;

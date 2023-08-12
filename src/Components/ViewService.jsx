@@ -446,7 +446,7 @@ const Container = styled.div`
 `;
 
 const LoginModal = styled.main`
-    z-index: 3;
+    z-index: 5;
     width: 100%;
     height: 100%;
     position: fixed;

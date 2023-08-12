@@ -8,7 +8,7 @@ export default function Logo()
     return(
         <LogoContainer href="/">
             <img src="/logo.png" alt="" />
-            <h1>{size.width > 600 ? "Get Samurais" : <span>G<span>S</span></span>}</h1>
+            <h1>{size.width > 900 ? "Get Samurais" : <span>G<span>S</span></span>}</h1>
         </LogoContainer>
     );
 }
@@ -21,8 +21,9 @@ const LogoContainer = styled.a`
     align-items: center;
     position: relative;
     margin: 0;
+    flex-shrink: 0;
     gap: 10px;
-    @media (max-width: 600px) {
+    @media (max-width: 900px) {
         border-radius: 50%;
         overflow: hidden;
         border: 1px solid #ffffff39;
@@ -37,7 +38,7 @@ const LogoContainer = styled.a`
         font-size: 50px;
         white-space: nowrap;
         font-family: Bonzai;
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             font-size: 30px;
             position: absolute;
             left: 50%;
