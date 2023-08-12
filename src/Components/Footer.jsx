@@ -13,10 +13,10 @@ export default function Footer() {
                         <a>About</a>
                     </li>
                     <li>
-                        <a>Contact</a>
+                        <a href="mailto:darlanswtz@gmail.com?subject=Assunto%20do%20email&body=Corpo%20do%20email">Contact</a>
                     </li>
                     <li>
-                        <a>FAQ</a>
+                        <a href="https://github.com/DarlanSchwartz/Get-Samurais" target="_blank">FAQ</a>
                     </li>
                     <li>
                         <a>{size.width < 400 ? "Work" : "Work with us"}</a>
