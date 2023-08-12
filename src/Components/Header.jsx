@@ -16,7 +16,7 @@ export default function Header() {
     function logout(){
         localStorage.removeItem('token');
         setUser(null);
-        navigate('/');
+       window.location.reload();
     }
     function askLogout()
     {
