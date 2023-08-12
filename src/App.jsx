@@ -60,7 +60,7 @@ export default function App() {
     axios.get(`${import.meta.env.VITE_API_URL}/services`)
     .then(res => {
         setServices(res.data);
-        console.log(res.data);
+        //console.log(res.data);
     }).catch(error => {
 
     });

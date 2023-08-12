@@ -15,16 +15,27 @@ import Reviews from "./Reviews";
 
 export default function ViewService() {
 
-    const { showService, setShowService, user, getServices } = useContext(UserContext);
+    const { showService, setShowService, user, getServices, categories } = useContext(UserContext);
     const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews } = showService;
     const reviewRef = useRef();
     const [distance, setDistance] = useState();
     const [loading, setLoading] = useState(false);
     const [reviewRating, setReviewRating] = useState(1);
-    
+    const [userCanWriteReview, setUserCanWriteReview] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (reviews && user) {
+            if (reviews.length > 0) {
+                const myRevs = reviews.filter(rev => rev.writer_id == user.id).length;
+                setUserCanWriteReview(myRevs == 0 ? true : false);
+            }
+            else {
+                setUserCanWriteReview(true);
+            }
+        }
+
         if (!user || !location || (user && owner_id == user.id)) return;
         distanceBetweenLocations(user.city_name, location)
             .then((dist) => {
@@ -33,7 +44,9 @@ export default function ViewService() {
             })
             .catch((err) => {
                 setDistance("Unknown");
-            })
+            });
+
+
     }, []);
 
     function askDeleteService() {
@@ -58,33 +71,50 @@ export default function ViewService() {
         })
     }
 
-    function publishReview()
-    {
-        if(!user || !reviewRef.current || reviewRef.current.value == "") return;
+    function publishReview() {
+        if (!user || !reviewRef.current || reviewRef.current.value == "") return;
         const review = {
-            review_text:reviewRef.current.value,
-            rating:reviewRating,
-            service_id:service_id,
-            writer_id:user.id,
+            review_text: reviewRef.current.value,
+            rating: reviewRating,
+            service_id: service_id,
+            writer_id: user.id,
         };
         setLoading(true);
-        axios.post(`${import.meta.env.VITE_API_URL}/service/review/new`,review,{ headers: { Authorization: localStorage.getItem("token") } })
-        .then(res => {
-            getServices();
-            setLoading(false);
-            console.log("ok");
-        }).catch(error => {
-            Swal.fire({
-                title: `Error ${error.response ? error.response.status : ""}`,
-                text: `${error.response ? error.response.data : "Something went wrong"}`,
-                icon: 'error',
-                width: 300,
-                confirmButtonColor: "red",
-                confirmButtonText: 'Ok'
+        axios.post(`${import.meta.env.VITE_API_URL}/service/review/new`, review, { headers: { Authorization: localStorage.getItem("token") } })
+            .then(res => {
+                getServices();
+                setLoading(false);
+                const newService = {
+                    name: res.data.name,
+                    owner: res.data.owner_name,
+                    description: res.data.description,
+                    category: categories[res.data.category],
+                    photo: res.data.photo,
+                    price: res.data.price,
+                    location: res.data.city_name,
+                    available: res.data.available,
+                    owner_id: res.data.owner_id,
+                    service_id: res.data.id,
+                    rating: res.data.overall_rating,
+                    reviews: res.data.reviews
+                }
+                setShowService(newService);
+                const myRevs = newService.reviews.filter(rev => rev.writer_id == user.id);
+                setUserCanWriteReview(myRevs.length > 0 ? false : true);
+
+                reviewRef.current.value = "";
+            }).catch(error => {
+                Swal.fire({
+                    title: `Error ${error.response ? error.response.status : ""}`,
+                    text: `${error.response ? error.response.data : "Something went wrong"}`,
+                    icon: 'error',
+                    width: 300,
+                    confirmButtonColor: "red",
+                    confirmButtonText: 'Ok'
+                });
+                console.log(error);
+                setLoading(false);
             });
-            console.log(error);
-            setLoading(false);
-        });
     }
 
     function deleteService() {
@@ -141,12 +171,19 @@ export default function ViewService() {
                     <h1>Reviews</h1>
                     <Reviews reviews={reviews} />
                     {!reviews || reviews && reviews.length == 0 ? <p>No reviews yet, write the first review!</p> : undefined}
-                    {user &&
+                    {user && userCanWriteReview &&
                         <>
                             <label htmlFor="write-review">Write your own review </label>
                             <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
                             <textarea ref={reviewRef} type="text" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis aliquid id iste nulla quos nobis officiis dolorum voluptates tempore praesentium similique totam laborum veniam, facilis beatae. Fugit nobis ea quam?" />
                             <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}</button>
+                        </>
+                    }
+                    {
+                        !userCanWriteReview &&
+
+                        <>
+                            <h3 className="cant-review">You already wrote your review of this service!</h3>
                         </>
                     }
                 </div>
@@ -230,6 +267,9 @@ const Container = styled.div`
             }
 
           
+        }
+        .cant-review{
+            margin-top: 20px;
         }
         h2{
             font-size: 16px;

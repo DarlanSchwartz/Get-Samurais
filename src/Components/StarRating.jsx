@@ -25,7 +25,7 @@ export default function StarRating ({ initialRating, onChange,size = "30px",inte
   }
 
   return (
-    <SCStarRating fsize={size} className='star-rating'>
+    <SCStarRating $fsize={size} className='star-rating'>
       {[1, 2, 3, 4, 5].map((value) => (
         <span
           key={value}
@@ -55,7 +55,7 @@ const SCStarRating = styled.div`
     .star {
         color: gray;
         cursor: pointer;
-        font-size:${(props)=> props.fsize};
+        font-size:${(props)=> props.$fsize};
     }
 
     .filled {
