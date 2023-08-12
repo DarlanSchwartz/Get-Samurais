@@ -259,7 +259,7 @@ const PageContainer = styled.main`
     h1{
         color: white;
         font-size: 50px;
-        margin-top: 100px;
+        margin-top: 60px;
 
         @media (max-width: 400px) {
         font-size: 40px;

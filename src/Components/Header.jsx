@@ -6,7 +6,7 @@ import UserContext from "../Contexts/UserContext";
 import { MdLogout } from "react-icons/md";
 import Swal from "sweetalert2";
 import 'animate.css';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AccountComponent from "./AccountComponent";
 import { useWindowScroll, useWindowSize } from "@uidotdev/usehooks";
 
@@ -16,6 +16,7 @@ export default function Header() {
     const navigate = useNavigate();
     const [{ x, y }, scrollTo] = useWindowScroll();
     const size = useWindowSize();
+    const location = useLocation();
     
     function logout(){
         localStorage.removeItem('token');
@@ -62,7 +63,7 @@ export default function Header() {
         <HeaderContainer $y ={y}>
             <Content>
                 <Logo />
-                {y > 100 && <SearchBar>
+                {(y > 100 && location.pathname == '/') && <SearchBar>
                     {user && <input value={searchText} onChange={(e) => setSearchText(e.target.value)} title="Search for samurai services" type="text" required placeholder="Search.." name="search" id="search" />}
                 </SearchBar> }
                 <Actions>
@@ -70,7 +71,7 @@ export default function Header() {
                         <>
                             <a className="user-btn">
                                 <img src="/login.png" alt="" />
-                                <p>{size.width <=700 ? "" : "Hi" + user.name}</p>
+                                <p>{size.width <=700 ? "" : user.name}</p>
                             </a>
                             <a className="logout-btn" onClick={askLogout}>
                                 <MdLogout />
@@ -175,7 +176,7 @@ const HeaderContainer = styled.header`
 
     padding-left: 20px;
     padding-right: 20px;
-    background-color: ${(props) => props.$y > 100 ? "rgba(0,0,0,0.8)" : "transparent"};
+    background-color: ${(props) => props.$y > 100 ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.1)"};
     position: ${(props) => props.$y > 100 ? "fixed" : "static"};
     left: 0;
     top: 0;

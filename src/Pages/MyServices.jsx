@@ -52,12 +52,12 @@ const ServicesList = styled.div`
     flex-direction: column;
     gap: 60px;
     background-color: rgba(0,0,0,0.2);
-    height: 100%;
     min-height: 400px;
     border-radius: 20px;
     width: 100%;
     max-width: 800px;
     padding: 20px;
+    height: fit-content;
     position: relative;
 
     @media (max-width: 800px) {
@@ -86,7 +86,6 @@ const PageContainer = styled.main`
     width: 100%;
     align-items: center;
     background-color: transparent;
-    height: 100%;
 
     .title{
         color: white;
