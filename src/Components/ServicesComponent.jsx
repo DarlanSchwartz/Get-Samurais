@@ -7,7 +7,7 @@ import { RotatingTriangles } from "react-loader-spinner";
 import { MdOutlineSegment } from "react-icons/md";
 
 export default function ServicesComponent() {
-    const { categories, services, getServices, searchText, setSearchText, currentFilter, setCurrentFilter } = useContext(UserContext);
+    const { categories, services, getServices, searchText, setSearchText, currentFilter, setCurrentFilter, user } = useContext(UserContext);
     const size = useWindowSize();
     useEffect(() => {
         getServices();
@@ -17,13 +17,16 @@ export default function ServicesComponent() {
             <div className="header">
                 <h1>Services</h1>
                 <div className="actions">
-                <a href="/my-services">
-                    <button>{size.width <= 500 ? <MdOutlineSegment/> : <>My Services <MdOutlineSegment/></>}</button>
-                </a>
-                <a href="/create-service">
-                    <button>{size.width <= 500 ? "+" : "Create Service +"}</button>
-                </a>
-              
+                    {user &&
+                        <>
+                            <a href="/my-services">
+                                <button>{size.width <= 500 ? <MdOutlineSegment /> : <>My Services <MdOutlineSegment /></>}</button>
+                            </a>
+                            <a href="/create-service">
+                                <button>{size.width <= 500 ? "+" : "Create Service +"}</button>
+                            </a>
+                        </>
+                    }
                 </div>
             </div>
             <ContainerServices>
