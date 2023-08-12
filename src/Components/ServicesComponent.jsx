@@ -5,6 +5,7 @@ import UserContext from "../Contexts/UserContext";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { RotatingTriangles } from "react-loader-spinner";
 import { MdOutlineSegment } from "react-icons/md";
+import { mainRed } from "../Colors/mainColors";
 
 export default function ServicesComponent() {
     const { categories, services, getServices, searchText, setSearchText, currentFilter, setCurrentFilter, user } = useContext(UserContext);
@@ -20,10 +21,10 @@ export default function ServicesComponent() {
                     {user &&
                         <>
                             <a href="/my-services">
-                                <button>{size.width <= 500 ? <MdOutlineSegment /> : <>My Services <MdOutlineSegment /></>}</button>
+                                <button>{size.width <= 700 ? <MdOutlineSegment /> : <>My Services <MdOutlineSegment /></>}</button>
                             </a>
                             <a href="/create-service">
-                                <button>{size.width <= 500 ? "+" : "Create Service +"}</button>
+                                <button>{size.width <= 700 ? "+" : "Create Service +"}</button>
                             </a>
                         </>
                     }
@@ -135,7 +136,7 @@ const SCServicesComponent = styled.section`
         }
         button{
             border: 0;
-            background-color: red;
+            background-color: ${mainRed};
             border-radius: 5px;
             color: white;
             height: 40px;
@@ -147,15 +148,15 @@ const SCServicesComponent = styled.section`
             align-items: center;
             justify-content: center;
             gap: 10px;
-            @media (max-width:500px) {
+            @media (max-width:700px) {
                 border-radius: 50%;
                 width: 40px;
             }
             &:enabled{
                 &:hover{
                 background-color: white;
-                color: red;
-                border: 1px solid red;
+                color: ${mainRed};
+                border: 1px solid ${mainRed};
             }
             }
             &:disabled{

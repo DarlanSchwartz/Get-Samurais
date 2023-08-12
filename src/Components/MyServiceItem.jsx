@@ -7,6 +7,7 @@ import { BiSolidEdit } from "react-icons/bi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { mainRed } from "../Colors/mainColors";
 
 export default function MyServiceItem({ name, description, category, photo, price, available, service_id}) {
 // { name, owner, description, category, photo, price, location, available, owner_id, service_id }
@@ -22,7 +23,7 @@ const navigate = useNavigate();
             imageWidth: 300,
             width: 300,
             confirmButtonText: `<p style="color:black">Yes</p>`,
-            cancelButtonColor: "red",
+            cancelButtonColor: mainRed,
             confirmButtonColor: "lightgray",
             showCancelButton: true,
             imageAlt: 'Custom image',
@@ -44,7 +45,7 @@ const navigate = useNavigate();
                     text: `${error.response ? error.response.data : "Something went wrong"}`,
                     icon: 'error',
                     width: 300,
-                    confirmButtonColor: "red",
+                    confirmButtonColor: mainRed,
                     confirmButtonText: 'Ok'
                 });
             });

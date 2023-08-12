@@ -1,29 +1,31 @@
+import { useWindowSize } from "@uidotdev/usehooks";
 import { styled } from "styled-components";
 
 export default function Footer() {
+    const size = useWindowSize();
     return (
         <SCFooter>
             <Content>
             <img className="logo inverted" src="/logo.png" alt="" />
                 <ul>
-                    <h1>More info</h1>
+                    <h1>Info</h1>
                     <li>
-                        <a>-About</a>
+                        <a>About</a>
                     </li>
                     <li>
-                        <a>-Contact</a>
+                        <a>Contact</a>
                     </li>
                     <li>
-                        <a>-FAQ</a>
+                        <a>FAQ</a>
                     </li>
                     <li>
-                        <a>-Work with us</a>
+                        <a>{size.width < 400 ? "Work" : "Work with us"}</a>
                     </li>
                     <li>
-                        <a>-Our app</a>
+                        <a>{size.width < 400 ? "App" : "Our app"}</a>
                     </li>
                     <li>
-                        <a>-Terms of service</a>
+                        <a title="Terms of service">{size.width < 400 ? "TOS" : "Terms of service"}</a>
                     </li>
                 </ul>
                 <ul>
@@ -55,6 +57,10 @@ export default function Footer() {
                     <li>
                         <a target="_blank" href="https://react-icons.github.io/react-icons/">React-Icons</a>
                     </li>
+
+                    <li>
+                        <a target="_blank" href="https://usehooks.com/">useHooks</a>
+                    </li>
                 </ul>
                 <img className="logo" src="/logo.png" alt="" />
             </Content>
@@ -67,7 +73,6 @@ const Content = styled.nav`
     max-width: 1200px;
     height: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
     @media (max-width: 750px) {
         padding-left: 10px;
@@ -76,6 +81,7 @@ const Content = styled.nav`
 
     .logo{
         height: 90%;
+        width: 200px;
         @media (max-width: 750px) {
             display: none;
         }
@@ -96,6 +102,11 @@ const Content = styled.nav`
         flex-direction: column;
         gap: 10px;
         justify-content: flex-start;
+
+        *{
+            width: fit-content;
+            max-width: 100px;
+        }
     }
 
     h1{
@@ -114,11 +125,11 @@ const Content = styled.nav`
 
 const SCFooter = styled.footer`
     margin-top: 40px;
-    height: 220px;
+    height: fit-content;
     width: 100%;
     background-color: #00000073;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    flex-direction: column;
 `;

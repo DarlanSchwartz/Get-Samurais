@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { styled } from "styled-components";
+import { mainRed } from "../Colors/mainColors";
 
 export default function CustomInput({ type, placeholder, is_required, name, content_reveal,input_value, set_input_value,autocomplete,max,placeholder_color}) {
     const [focused, setFocused] = useState(false);
@@ -53,7 +54,7 @@ const CustomInputContainer = styled.section`
         &:focus{
             outline: none;
             .placeholder{
-                color: red;
+                color: ${mainRed};
             }
         }
 

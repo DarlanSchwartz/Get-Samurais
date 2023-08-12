@@ -31,4 +31,8 @@ const SCReview = styled.section`
         gap: 10px;
     }
 
+    p{
+        line-height: 20px;
+    }
+
 `;

@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import Logo from "./Logo";
-import { mainColor } from "../Colors/mainColors";
+import { mainColor, mainRed } from "../Colors/mainColors";
 import { useContext, useState } from "react";
 import UserContext from "../Contexts/UserContext";
 import { MdLogout } from "react-icons/md";
@@ -8,11 +8,13 @@ import Swal from "sweetalert2";
 import 'animate.css';
 import { useNavigate } from "react-router-dom";
 import AccountComponent from "./AccountComponent";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Header() {
 
-    const { user, setUser, searchText, setSearchText,showAuthenticate,setShowAuthenticate } = useContext(UserContext);
+    const { user, setUser,showAuthenticate,setShowAuthenticate } = useContext(UserContext);
     const navigate = useNavigate();
+    
     function logout(){
         localStorage.removeItem('token');
         setUser(null);
@@ -37,7 +39,7 @@ export default function Header() {
             imageHeight: 200,
             width:300,
             confirmButtonText:`<p style="color:black">Yes</p>`,
-            cancelButtonColor:"red",
+            cancelButtonColor:mainRed,
             confirmButtonColor:"lightgray",
             showCancelButton: true,
             imageAlt: 'Custom image',

@@ -3,6 +3,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { useContext } from "react";
 import UserContext from "../Contexts/UserContext";
 import StarRating from "./StarRating";
+import { mainRed, secondRed } from "../Colors/mainColors";
 
 export default function ServiceItem({ name, owner, description, category, photo, price, location, available,owner_id,service_id,rating,reviews }) {
     const { setShowService } = useContext(UserContext);
@@ -77,7 +78,7 @@ h1{
     span{
         font-family: sans-serif;
         font-size: 20px;
-        color: red;
+        color: ${secondRed};
         font-weight: bold;
     }
 }

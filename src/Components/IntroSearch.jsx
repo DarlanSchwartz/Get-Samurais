@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import { useContext } from "react";
 import UserContext from "../Contexts/UserContext";
+import { mainRed } from "../Colors/mainColors";
 export default function IntroSearch() {
     const { searchText, setSearchText, currentFilter, setCurrentFilter } = useContext(UserContext);
     return (
@@ -109,7 +110,7 @@ form{
         transform: translateY(-50%);
         border: 0;
         color: white;
-        background-color: red;
+        background-color: ${mainRed};
 
         &:hover{
             opacity: 70%;

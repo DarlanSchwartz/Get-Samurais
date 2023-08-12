@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { mainRed } from "../Colors/mainColors";
 
 export default function EditService() {
     const {user,categories} = useContext(UserContext);
@@ -21,13 +22,16 @@ export default function EditService() {
     const [currentPhotoPreview, setCurrentPhotoPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     useEffect(()=>{
+        
+        if(!localStorage.getItem("token") || !state.showService) return navigate('/');
+        
         photoRef.current.value = state.showService.photo;
         nameRef.current.value = state.showService.name;
         categoryRef.current.value = state.showService.category;
         priceRef.current.value = parseInt(state.showService.price.replace('$',''));
         descriptionRef.current.value = state.showService.description;
 
-        if(!localStorage.getItem("token") || !state.showService) return navigate('/');
+        seePreview();
     },[])
 
 
@@ -70,7 +74,7 @@ export default function EditService() {
                 text: `Paste a proper image url on the input photo field`,
                 icon: 'error',
                 width: 300,
-                confirmButtonColor: "red",
+                confirmButtonColor: mainRed,
                 confirmButtonText: 'Ok'
               });
               photoRef.current.focus();
@@ -173,7 +177,7 @@ const CreationComponent = styled.form`
     }
     button{
         border: 0;
-            background-color: red;
+            background-color: ${mainRed};
             border-radius: 5px;
             color: white;
             height: 40px;
@@ -184,8 +188,8 @@ const CreationComponent = styled.form`
             &:enabled{
                 &:hover{
                 background-color: white;
-                color: red;
-                border: 1px solid red;
+                color: ${mainRed};
+                border: 1px solid ${mainRed};
             }
             }
             &:disabled{
@@ -263,7 +267,6 @@ const PageContainer = styled.main`
     width: 100%;
     align-items: center;
     background-color: transparent;
-    height: 100%;
 
     h1{
         color: white;

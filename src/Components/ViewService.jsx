@@ -7,21 +7,24 @@ import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiSolidEdit } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
-import { AiFillQuestionCircle, AiFillCheckCircle } from "react-icons/ai";
+import { AiFillQuestionCircle, AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
 import StarRating from "./StarRating";
 import Reviews from "./Reviews";
+import { blue, mainRed, secondRed } from "../Colors/mainColors";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function ViewService() {
 
-    const { showService, setShowService, user, getServices, categories } = useContext(UserContext);
+    const { showService, setShowService, user, getServices, categories, setShowAuthenticate } = useContext(UserContext);
     const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews } = showService;
     const reviewRef = useRef();
     const [distance, setDistance] = useState();
     const [loading, setLoading] = useState(false);
     const [reviewRating, setReviewRating] = useState(1);
     const [userCanWriteReview, setUserCanWriteReview] = useState(false);
+    const size = useWindowSize();
 
     const navigate = useNavigate();
 
@@ -58,7 +61,7 @@ export default function ViewService() {
             imageWidth: 300,
             width: 300,
             confirmButtonText: `<p style="color:black">Yes</p>`,
-            cancelButtonColor: "red",
+            cancelButtonColor: mainRed,
             confirmButtonColor: "lightgray",
             showCancelButton: true,
             imageAlt: 'Custom image',
@@ -109,7 +112,7 @@ export default function ViewService() {
                     text: `${error.response ? error.response.data : "Something went wrong"}`,
                     icon: 'error',
                     width: 300,
-                    confirmButtonColor: "red",
+                    confirmButtonColor: mainRed,
                     confirmButtonText: 'Ok'
                 });
                 console.log(error);
@@ -127,7 +130,7 @@ export default function ViewService() {
                     text: `${error.response ? error.response.data : "Something went wrong"}`,
                     icon: 'error',
                     width: 300,
-                    confirmButtonColor: "red",
+                    confirmButtonColor: mainRed,
                     confirmButtonText: 'Ok'
                 });
             });
@@ -136,34 +139,40 @@ export default function ViewService() {
     return (
         <LoginModal onClick={(e) => { setShowService(null); e.stopPropagation() }}>
             <Container onClick={(e) => e.stopPropagation()}>
-                {user && owner_id == user.id &&
-                    <Actions>
-                        <BiSolidEdit title="edit" onClick={(e) => {
-                            e.stopPropagation();
-                            setShowService(null);
-                            navigate(`/edit-service/${service_id}`, { state: { showService } })
-                        }} />
-                        <BsFillTrashFill title="delete" onClick={askDeleteService} />
-                    </Actions>
-                }
+
+                <Actions>
+                    {
+                        user && owner_id == user.id &&
+                        <>
+                            <BiSolidEdit className="action" title="Edit" onClick={(e) => {
+                                e.stopPropagation();
+                                setShowService(null);
+                                navigate(`/edit-service/${service_id}`, { state: { showService } })
+                            }} />
+                            <BsFillTrashFill className="action" title="Delete" onClick={askDeleteService} />
+                        </>
+                    }
+                    <AiFillCloseCircle title="Close" className="action" onClick={() => setShowService(null)} />
+                </Actions>
+
                 <div className="main">
                     <div className="left">
                         <h1> {name}</h1>
                         <p>{description}</p>
                         <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
                         <h1><BsFillPersonFill />Samurai: {user && owner_id == user.id ? "You" : owner}</h1>
-                        {(user && owner_id !== user.id) && <p>{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
+                        {(user && owner_id !== user.id) && <p className="distance">{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
                         <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
                     </div>
                     <div className="right">
 
                         <img src={photo} alt="" />
                         <div className="actions">
-                            <button><AiFillQuestionCircle /> Ask something</button>
+                            <button className="ask"><AiFillQuestionCircle /> {size.width <= 500 ? "" : "Ask something"}</button>
                             <button><AiFillCheckCircle /> Hire</button>
                         </div>
                         <div className="rating">
-                            <StarRating initialRating={rating} />
+                            <StarRating size={size.width <=500 ? "15px" : "30px"} initialRating={rating} />
                         </div>
                     </div>
                 </div>
@@ -173,9 +182,9 @@ export default function ViewService() {
                     {!reviews || reviews && reviews.length == 0 ? <p>No reviews yet, write the first review!</p> : undefined}
                     {user && userCanWriteReview &&
                         <>
-                            <label htmlFor="write-review">Write your own review </label>
+                            <label htmlFor="write-review">Write your review </label>
                             <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
-                            <textarea ref={reviewRef} type="text" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis aliquid id iste nulla quos nobis officiis dolorum voluptates tempore praesentium similique totam laborum veniam, facilis beatae. Fugit nobis ea quam?" />
+                            <textarea ref={reviewRef} type="text" placeholder="e.g This was a great service!" />
                             <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}</button>
                         </>
                     }
@@ -183,7 +192,7 @@ export default function ViewService() {
                         !userCanWriteReview &&
 
                         <>
-                            <h3 className="cant-review">You already wrote your review of this service!</h3>
+                            <h3 className="cant-review">{user ? "You already wrote your review of this service!" : <><span onClick={() => { setShowAuthenticate(true); setShowService(null) }}>Login</span> to write reviews</>}</h3>
                         </>
                     }
                 </div>
@@ -199,15 +208,21 @@ const Actions = styled.nav`
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     right: 0;
-    width: 80px;
-    height: 80px;
+    padding: 10px;
+    height: 40px;
     display: flex;
     justify-content: flex-end;
     padding-top: 10px;
     gap: 10px;
     font-size: 30px;
-    *{
+
+    .action{
         cursor: pointer;
+        &:hover{
+           *{
+            color: ${mainRed};
+           }
+        }
     }
 `;
 
@@ -221,6 +236,12 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+    border-top-right-radius: 0;
+
+    @media (max-width: 500px) {
+       max-width: 100%;
+       border-radius: 0;
+    }
     
     .main{
         display: flex;
@@ -232,8 +253,11 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         position: relative;
+        @media (max-width: 500px) {
+            margin-top: 20px;
+        }
         button{
-            background-color: red;
+            background-color: ${mainRed};
             color: white;
             border-radius: 5px;
             font-size: 15px;
@@ -242,9 +266,11 @@ const Container = styled.div`
             position: absolute;
             bottom: 5px;
             right: 5px;
+            border: 1px solid transparent;
             &:hover{
-                color: red;
+                color: ${mainRed};
                 background-color: white;
+                border: 1px solid ${mainRed};
             }
         }
         textarea{
@@ -258,7 +284,7 @@ const Container = styled.div`
                 width: 10px; 
             }
             &::-webkit-scrollbar-thumb {
-                background-color: red; 
+                background-color: ${mainRed}; 
                 border-radius: 3px; 
             }
 
@@ -270,6 +296,13 @@ const Container = styled.div`
         }
         .cant-review{
             margin-top: 20px;
+            span{
+                color: ${blue};
+                &:hover{
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
         }
         h2{
             font-size: 16px;
@@ -316,6 +349,12 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         gap: 30px;
+        @media (max-width: 500px) {
+            gap: 20px;
+        }
+        .distance{
+            white-space: nowrap;
+        }
         h1{
             &:first-child{
                 font-size: 30px;
@@ -333,7 +372,7 @@ const Container = styled.div`
             line-height: 19px;
 
             span{
-                color: red;
+                color: ${secondRed};
                 font-weight: bold;
             }
         }
@@ -368,9 +407,19 @@ const Container = styled.div`
             gap: 10px;
             align-items: center;
             padding: 10px;
-
+            .ask{
+                @media (max-width: 500px) {
+                    min-width: 40px;
+                    width: 40px !important;
+                    height: 40px !important;
+                    border-radius: 50%;
+                    flex-grow: 0;
+                    box-sizing: border-box;
+                    gap: 0;
+                }
+            }
                 button{
-                background-color: red;
+                background-color: ${mainRed};
                 border-radius: 5px;
                 height:40px;
                 box-sizing: border-box;
@@ -385,9 +434,9 @@ const Container = styled.div`
                 gap: 10px;
                 &:hover{
                     background-color: white;
-                    color: red !important;
+                    color: ${mainRed} !important;
                     *{
-                        color: red !important;
+                        color: ${mainRed} !important;
                     }
                 }
             }

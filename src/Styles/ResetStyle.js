@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { mainColor } from "../Colors/mainColors";
+import { mainColor, mainRed } from "../Colors/mainColors";
 
 const ResetStyle = createGlobalStyle`
 html, body, span, applet, object, iframe,
@@ -61,7 +61,7 @@ html, body, span, applet, object, iframe,
 			width: 10px; /* Largura da barra de rolagem */
 		}
 		&::-webkit-scrollbar-thumb {
-			background-color: red; /* Cor do handle */
+			background-color: ${mainRed}; /* Cor do handle */
 			border-radius: 3px; /* Borda arredondada do handle */
 		}
 

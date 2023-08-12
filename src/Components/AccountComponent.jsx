@@ -6,6 +6,7 @@ import axios from "axios";
 import { BsSearch } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { blue, mainRed } from "../Colors/mainColors";
 
 export default function AccountComponent() {
     const { user, setUser, setShowAuthenticate,getUserInfo } = useContext(UserContext);
@@ -75,7 +76,7 @@ export default function AccountComponent() {
                     width: 300,
                     background:"#1f1f1f",
                     color:"white",
-                    confirmButtonColor: "red",
+                    confirmButtonColor: mainRed,
                     confirmButtonText: 'Ok'
                   });
                 setLoading(false);
@@ -119,7 +120,7 @@ export default function AccountComponent() {
                 text: `${error.response.data}`,
                 icon: 'error',
                 width: 300,
-                confirmButtonColor: "red",
+                confirmButtonColor: mainRed,
                 confirmButtonText: 'Ok'
               });
               setLoading(false);
@@ -203,6 +204,15 @@ const AuthenticationContainer = styled.section`
         display: flex;
         align-items: center;
         gap: 10px;
+        .search-btn{
+            &:hover{
+                background-color: white !important;
+                *{
+                    color: ${mainRed};
+                }
+                
+            }
+        }
         p{
             width: 100%;
             max-width: 250px;
@@ -219,6 +229,8 @@ const AuthenticationContainer = styled.section`
             &:focus{
                 outline: 0;
             }
+
+           
         }
 
         button{
@@ -233,7 +245,7 @@ const AuthenticationContainer = styled.section`
             justify-content: center;
            &:enabled{
             &:hover{
-                background-color: red;
+                background-color: ${mainRed};
                 color: white;
             }
            }
@@ -273,15 +285,18 @@ const AuthenticationContainer = styled.section`
         font-size: 14px;
         color: white;
         span{
-            color: blue;
+            color: ${blue};
             cursor: pointer;
             font-weight: bold;
+            &:hover{
+                text-decoration: underline;
+            }
         }
     }
 
     button{
         border: 0;
-        background-color: red;
+        background-color: ${mainRed};
         border-radius: 5px;
         color: white;
         height: 40px;
@@ -291,8 +306,8 @@ const AuthenticationContainer = styled.section`
         &:enabled{
             &:hover{
             background-color: white;
-            color: red;
-            border: 1px solid red;
+            color: ${mainRed};
+            border: 1px solid ${mainRed};
         }
         }
         &:disabled{

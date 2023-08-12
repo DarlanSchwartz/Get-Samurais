@@ -60,6 +60,12 @@ const ServicesList = styled.div`
     padding: 20px;
     position: relative;
 
+    @media (max-width: 800px) {
+        max-width: 100%;
+        border-radius: 0;
+    }
+
+
     .no-services{
         color: white;
         position: absolute;
@@ -67,6 +73,10 @@ const ServicesList = styled.div`
         top: 50%;
         transform: translate(-50%,-50%);
         font-size: 30px;
+
+        @media (max-width: 800px) {
+           white-space: nowrap;
+        }
     }
 `;
 const PageContainer = styled.main`
