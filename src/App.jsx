@@ -12,6 +12,7 @@ import axios from 'axios';
 import CreateService from './Pages/CreateService';
 import EditService from './Pages/EditService';
 import Footer from './Components/Footer';
+import MyServices from './Pages/MyServices';
 
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
           <Route path='/' element={<Home />} />
           <Route path='/create-service' element={<CreateService />} />
           <Route path='/edit-service/:id' element={<EditService />} />
+          <Route path='/my-services' element={<MyServices />} />
         </Routes>
         <Footer/>
       </BrowserRouter>

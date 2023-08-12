@@ -48,7 +48,7 @@ html, body, span, applet, object, iframe,
 
     body,html{
         min-height: 100%;
-		height: 100%;
+		height: auto;
         background-color: transparent;
     }
 	body{
@@ -61,6 +61,9 @@ html, body, span, applet, object, iframe,
 			background-color: red; /* Cor do handle */
 			border-radius: 3px; /* Borda arredondada do handle */
 		}
+
+		overflow-y: scroll !important;
+		padding: 0 !important;
 	}
 
     #root{

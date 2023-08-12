@@ -4,47 +4,53 @@ import { useContext, useEffect } from "react";
 import UserContext from "../Contexts/UserContext";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { RotatingTriangles } from "react-loader-spinner";
+import { MdOutlineSegment } from "react-icons/md";
 
 export default function ServicesComponent() {
-    const { categories,services,getServices,searchText, setSearchText ,currentFilter,setCurrentFilter} = useContext(UserContext);
+    const { categories, services, getServices, searchText, setSearchText, currentFilter, setCurrentFilter } = useContext(UserContext);
     const size = useWindowSize();
-    useEffect(()=>{
+    useEffect(() => {
         getServices();
-    },[])
+    }, [])
     return (
         <SCServicesComponent>
             <div className="header">
                 <h1>Services</h1>
-                <a href="/create-service">
-                    <button>{size.width <=500 ? "+" : "Create Service"}</button>
+                <div className="actions">
+                <a href="/my-services">
+                    <button>{size.width <= 500 ? <MdOutlineSegment/> : <>My Services <MdOutlineSegment/></>}</button>
                 </a>
+                <a href="/create-service">
+                    <button>{size.width <= 500 ? "+" : "Create Service +"}</button>
+                </a>
+              
+                </div>
             </div>
             <ContainerServices>
-                {!services && 
-                
-                <div className="loading-gif">
-                     <RotatingTriangles
-                                visible={true}
-                                height="80"
-                                width="80"
-                                ariaLabel="rotating-triangels-loading"
-                                wrapperClass="inner"
-                                colors={["red","white","black"]}
-                                />
-                                <p>Loading...</p>
-                </div>
-                
+                {!services &&
+
+                    <div className="loading-gif">
+                        <RotatingTriangles
+                            visible={true}
+                            height="80"
+                            width="80"
+                            ariaLabel="rotating-triangels-loading"
+                            wrapperClass="inner"
+                            colors={["red", "white", "black"]}
+                        />
+                        <p>Loading...</p>
+                    </div>
+
                 }
                 {services &&
 
                     services.map((service) => {
-                        if(currentFilter == "All" && searchText == "" ||  
-                        (searchText!== "" &&  service.name.toLowerCase().includes(searchText.toLowerCase())) || 
-                        (currentFilter == categories[service.category] && searchText == "") ||
-                        (searchText!== "" &&  categories[service.category].toLowerCase().includes(searchText.toLowerCase())))
-                        {
+                        if (currentFilter == "All" && searchText == "" ||
+                            (searchText !== "" && service.name.toLowerCase().includes(searchText.toLowerCase())) ||
+                            (currentFilter == categories[service.category] && searchText == "") ||
+                            (searchText !== "" && categories[service.category].toLowerCase().includes(searchText.toLowerCase()))) {
                             return (
-                            
+
                                 <ServiceItem
                                     service_id={service.id}
                                     key={service.id}
@@ -117,6 +123,13 @@ const SCServicesComponent = styled.section`
         width: 100%;
         align-items: center;
         margin-bottom: 30px;
+
+        .actions{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap:20px;
+        }
         button{
             border: 0;
             background-color: red;
@@ -127,6 +140,10 @@ const SCServicesComponent = styled.section`
             transition: all 200ms;
             border: 1px solid transparent;
             width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             @media (max-width:500px) {
                 border-radius: 50%;
                 width: 40px;
