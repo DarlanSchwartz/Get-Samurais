@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { mainRed } from "../Colors/mainColors";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { AiFillLeftCircle } from "react-icons/ai";
-import {TfiReload} from "react-icons/tfi";
+import { TfiReload } from "react-icons/tfi";
 
 export default function CreateService() {
     const { user, categories } = useContext(UserContext);
@@ -54,11 +54,11 @@ export default function CreateService() {
         let body = new FormData()
         body.set('key', import.meta.env.VITE_IMAGE_API_KEY)
         body.append('image', img)
-    
+
         return axios({
-          method: 'post',
-          url: 'https://api.imgbb.com/1/upload',
-          data: body
+            method: 'post',
+            url: 'https://api.imgbb.com/1/upload',
+            data: body
         })
     }
     async function seePreview() {
@@ -69,13 +69,22 @@ export default function CreateService() {
             return;
         }
 
-        await validateUrl(photoRef.current.value)
-            .then((() => {
-                setCurrentPhotoPreview(photoRef.current.value);
-            }))
-            .catch(() => {
-                setCurrentPhotoPreview(null);
+        try {
+            await validateUrl(photoRef.current.value);
+            setCurrentPhotoPreview(photoRef.current.value);
+        } catch (error) {
+
+            Swal.fire({
+                title: `Invalid image`,
+                text: `Paste a proper image url on the input photo field`,
+                icon: 'error',
+                width: 300,
+                confirmButtonColor: mainRed,
+                confirmButtonText: 'Ok'
             });
+
+            setCurrentPhotoPreview(null);
+        }
     }
 
     async function validateUrl(url) {
@@ -91,46 +100,67 @@ export default function CreateService() {
         });
     }
 
-    function servicePhotoCheck(e) {
+    async function servicePhotoCheck(e) {
         e.preventDefault();
         setLoading(true);
 
         const wasAImageFile = photoRef.current.value == "";
 
-        if(!wasAImageFile)
-        {
-            validateUrl(photoRef.current.value)
-            .then(() => {
+        try {
+            if (!wasAImageFile) {
+                await validateUrl(photoRef.current.value);
                 createService(photoRef.current.value);
-            })
-            .catch(() => {
-                Swal.fire({
-                    title: `Invalid image`,
-                    text: `Paste a proper image url on the input photo field`,
-                    icon: 'error',
-                    width: 300,
-                    confirmButtonColor: mainRed,
-                    confirmButtonText: 'Ok'
-                });
-                photoRef.current.focus();
-                setLoading(false);
-        });
-        }
-        else{
-            const selectedFile = photoRef2.current.files[0];
-            if(!selectedFile) return alert("Erro");
-            uploadImage(selectedFile)
-            .then(res=>{
-                createService(res.data.data.display_url);
-                console.log(res);
-            }).catch(error=>{
-                console.log(error);
+
+            } else {
+                const selectedFile = photoRef2.current.files[0];
+                if (!selectedFile) return alert("Erro");
+                uploadImage(selectedFile)
+                    .then(res => {
+                        createService(res.data.data.display_url);
+                        console.log(res);
+                    }).catch(error => {
+                        Swal.fire({
+                            title: `Image error`,
+                            text: `There was a problem trying to upload your image, try again with another method or file`,
+                            icon: 'error',
+                            width: 300,
+                            confirmButtonColor: mainRed,
+                            confirmButtonText: 'Ok'
+                        });
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                title: `Invalid image`,
+                text: `Paste a proper image url on the input photo field`,
+                icon: 'error',
+                width: 300,
+                confirmButtonColor: mainRed,
+                confirmButtonText: 'Ok'
             });
+
+            photoRef.current.focus();
+            setLoading(false);
+            setCurrentPhotoPreview(null);
         }
     }
 
-    function createService(photoUrl)
-    {
+    function createService(photoUrl) {
+
+        if (!user) {
+            Swal.fire({
+                title: `Login`,
+                text: `You need to be logged in to create services!`,
+                icon: 'error',
+                width: 300,
+                confirmButtonColor: mainRed,
+                confirmButtonText: 'Ok'
+            });
+            setLoading(false);
+            return;
+        }
+
         const service = {
             name: nameRef.current.value,
             ownerId: user.id,
@@ -159,7 +189,14 @@ export default function CreateService() {
                 setLoading(false);
 
             }).catch(error => {
-                console.log(error.response);
+                Swal.fire({
+                    title: `Error ${error?.response?.status}`,
+                    text: `${error?.response?.statusText}`,
+                    icon: 'error',
+                    width: 300,
+                    confirmButtonColor: mainRed,
+                    confirmButtonText: 'Ok'
+                });
                 setLoading(false);
             });
     }
@@ -179,31 +216,30 @@ export default function CreateService() {
                     </div>
                 </div>
                 <div className="input-container photo-container">
-                   <div className="photo-actions">
-                   <label htmlFor="photo">Image url</label>
-                    <input ref={photoRef} required={photoRef2.current?.files[0] ? false : true} id="photo" name="photo" type="text" placeholder="e.g https://image.jpg" />
-                    <span>or</span>
-                    <button
-                        type="button"
-                        className="custom-file-button"
-                        onClick={() => photoRef2.current.click()}
-                    >
-                        Choose file
-                    </button>
-                    <input
-                        ref={photoRef2}
-                        accept=".jpg, .jpeg, .png, .bmp, .gif, .tif, .webp"
-                        required
-                        id="photo"
-                        name="photo"
-                        type="file"
-                        style={{ display: 'none' }}
-                        onChange={fileChanged}
-                    />
-                   </div>
+                    <div className="photo-actions">
+                        <label htmlFor="photo">Image url</label>
+                        <input ref={photoRef} required={photoRef2.current?.files[0] ? false : true} id="photo" name="photo" type="text" placeholder="e.g https://image.jpg" />
+                        <span>or</span>
+                        <button
+                            type="button"
+                            className="custom-file-button"
+                            onClick={() => photoRef2.current.click()}
+                        >
+                            Choose file
+                        </button>
+                        <input
+                            ref={photoRef2}
+                            accept=".jpg, .jpeg, .png, .bmp, .gif, .tif, .webp"
+                            id="photo2"
+                            name="photo2"
+                            type="file"
+                            style={{ display: 'none' }}
+                            onChange={fileChanged}
+                        />
+                    </div>
                     <div className="image-preview">
                         <img src={currentPhotoPreview ? currentPhotoPreview : defaultPhotoPlaceholder} alt="placeholder image" title="Place your image url above" />
-                        <button type="button" title="Place your image url above" onClick={seePreview}><TfiReload/></button>
+                        <button type="button" title="Place your image url above" onClick={seePreview}><TfiReload /></button>
                     </div>
                 </div>
 
