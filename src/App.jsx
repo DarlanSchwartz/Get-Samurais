@@ -13,6 +13,7 @@ import CreateService from './Pages/CreateService';
 import EditService from './Pages/EditService';
 import Footer from './Components/Footer';
 import MyServices from './Pages/MyServices';
+import HirePage from './Pages/HirePage';
 
 
 export default function App() {
@@ -81,6 +82,7 @@ export default function App() {
           <Route path='/create-service' element={<CreateService />} />
           <Route path='/edit-service/:id' element={<EditService />} />
           <Route path='/my-services' element={<MyServices />} />
+          <Route path='/hire/:id' element={<HirePage />} />
         </Routes>
         <Footer/>
       </BrowserRouter>

@@ -83,6 +83,8 @@ export default function ViewService() {
     function hire()
     {
         if(!user) return setShowAuthenticate(true);
+        setShowService(null);
+        navigate(`/hire/${service_id}`);
 
     }
 
