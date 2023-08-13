@@ -7,13 +7,13 @@ import { mainRed } from "../Colors/mainColors";
 
 export default function FilterComponent() {
 
-    const { currentFilter, setCurrentFilter, categories,showAuthenticate } = useContext(UserContext);
+    const { currentFilter, setCurrentFilter, categories,showAuthenticate ,showService} = useContext(UserContext);
     const [{ x, y }, scrollTo] = useWindowScroll();
 
     //scrollTo({ left: 0, top: 0, behavior: "smooth" })}
    
     return (
-        <Container $y ={showAuthenticate ? 0 : y}>
+        <Container $y ={(showAuthenticate || showService)  ? 0 : y}>
             <Content>
                 {categories.map((imgName,index) => {
                     return (

@@ -12,7 +12,7 @@ import { useWindowScroll, useWindowSize } from "@uidotdev/usehooks";
 
 export default function Header() {
 
-    const { user, setUser,showAuthenticate,setShowAuthenticate,searchText,setSearchText } = useContext(UserContext);
+    const { user, setUser,showAuthenticate,setShowAuthenticate,searchText,setSearchText,showService } = useContext(UserContext);
     const navigate = useNavigate();
     const [{ x, y }, scrollTo] = useWindowScroll();
     const size = useWindowSize();
@@ -60,7 +60,7 @@ export default function Header() {
         setShowAuthenticate(true);
     }
     return (
-        <HeaderContainer $y ={showAuthenticate ? 0 : y}>
+        <HeaderContainer $y ={(showAuthenticate || showService)  ? 0 : y}>
             <Content>
                 <Logo />
                 {(y > 100 && location.pathname == '/') && <SearchBar>

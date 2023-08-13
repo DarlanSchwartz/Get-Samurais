@@ -394,7 +394,7 @@ const Container = styled.div`
 
            &:first-child{
             overflow: hidden;
-            height: 30px;
+            height: fit-content;
             flex-shrink: 0;
            }
         }
