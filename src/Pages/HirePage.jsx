@@ -10,6 +10,7 @@ import { MdLocationPin } from "react-icons/md";
 import { mainRed } from "../Colors/mainColors";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { RotatingTriangles } from "react-loader-spinner";
 
 export default function HirePage() {
     const { user, categories } = useContext(UserContext);
@@ -98,7 +99,21 @@ export default function HirePage() {
                     </Service>
                 }
                 {
-                    notFound && <h1 className="not-found">Page not found</h1>
+                     notFound && <h1 className="not-found">Page not found</h1>
+                }
+                {
+                    (!notFound && !service) &&  
+                    <div className="loading-gif">
+                    <RotatingTriangles
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="rotating-triangels-loading"
+                        wrapperClass="inner"
+                        colors={["red", "white", "black"]}
+                    />
+                    <p>Loading...</p>
+                </div>
                 }
 
             </Container>
@@ -246,6 +261,16 @@ const Container = styled.div`
     position: relative;
     width: 100%;
     max-width: 650px;
+    .loading-gif{
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        p{
+            color: white;
+        }
+    }
     .title{
         text-align: center;
         font-size: 30px;
