@@ -75,9 +75,9 @@ export default function ViewService() {
     }
 
     function publishReview() {
-        if (!user || !reviewRef.current || reviewRef.current.value == "") return;
+        if (!user || !reviewRef.current) return;
         const review = {
-            review_text: reviewRef.current.value,
+            review_text: reviewRef.current.value ?reviewRef.current.value : " ",
             rating: reviewRating,
             service_id: service_id,
             writer_id: user.id,

@@ -7,7 +7,7 @@ export default function ReviewItem({writer,review,rating}) {
         <SCReview>
             <h2><BsFillPersonFill /> {writer ? writer : "Username"} <StarRating initialRating={rating ? rating : 5} size="15px"/></h2>
             <p>
-                {review ? review : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus dolor doloribus iure nemo eos recusandae architecto tenetur mollitia dolorum dolores debitis, vitae molestiae. Labore error fuga sed rerum, dolor consequuntur?"}
+                {review ? review : ""}
             </p>
             
         </SCReview>
