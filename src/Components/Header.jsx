@@ -150,6 +150,7 @@ box-sizing: content-box;
         padding-left: 20px;
         font-size: 15px;
         border-radius: 30px;
+        border: 0;
         &:focus{
             outline: 0;
         }

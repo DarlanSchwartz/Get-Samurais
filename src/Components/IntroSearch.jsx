@@ -50,6 +50,10 @@ h1,h2{
 h1{
     font-size: 45px;
     line-height: 50px;
+
+    @media (max-width:400px) {
+        font-size: 35px;
+    }   
 }
 
 .top{

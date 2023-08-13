@@ -9,7 +9,7 @@ export default function CustomInput({ type, placeholder, is_required, name, cont
     return (
         <CustomInputContainer $focused={!focused && input_value == "" ? "false" : "true"} $placeholder_color={placeholder_color}>
             <label className="placeholder" htmlFor={name}>{placeholder}</label>
-            <input maxLength={max ? max : 300} autoComplete={autocomplete} value={input_value} onChange={(e) => set_input_value(e.target.value)} type={content_reveal == "true" && reveal ? "text" : type} name={name} id={name} required={is_required} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+            <input maxLength={max ? max : 300} autoComplete={name} value={input_value} onChange={(e) => set_input_value(e.target.value)} type={content_reveal == "true" && reveal ? "text" : type} name={name} id={name} required={is_required} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
             {
                 content_reveal == "true" &&
 
