@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
 export default function StarRating ({ initialRating, onChange,size = "30px",interactable }){
-  const [rating, setRating] = useState(initialRating);
+  const [rating, setRating] = useState(parseInt(initialRating));
   const [hoveredRating, setHoveredRating] = useState(null);
   
   function handleRatingChange(newRating) {

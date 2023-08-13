@@ -98,7 +98,7 @@ export default function ViewService() {
                     available: res.data.available,
                     owner_id: res.data.owner_id,
                     service_id: res.data.id,
-                    rating: res.data.overall_rating,
+                    rating: parseInt(res.data.overall_rating),
                     reviews: res.data.reviews
                 }
                 setShowService(newService);
@@ -179,7 +179,7 @@ export default function ViewService() {
                 <div className="bottom">
                     <h1>Reviews</h1>
                     <Reviews reviews={reviews} />
-                    {!reviews || reviews && reviews.length == 0 ? <p>No reviews yet, write the first review!</p> : undefined}
+                    {!reviews || reviews && reviews.length == 0 ? <p className="no-reviews">No reviews yet, write the first review!</p> : undefined}
                     {user && userCanWriteReview &&
                         <>
                             <label htmlFor="write-review">Write your review </label>
@@ -192,7 +192,7 @@ export default function ViewService() {
                         !userCanWriteReview &&
 
                         <>
-                            <h3 className="cant-review">{user ? "You already wrote your review of this service!" : <><span onClick={() => { setShowAuthenticate(true); setShowService(null) }}>Login</span> to write reviews</>}</h3>
+                            <h3 className="cant-review">{user ? "You already wrote your review!" : <><span onClick={() => { setShowAuthenticate(true); setShowService(null) }}>Login</span> to write reviews</>}</h3>
                         </>
                     }
                 </div>
@@ -229,6 +229,7 @@ const Actions = styled.nav`
 const Container = styled.div`
     width: 100%;
     height: fit-content;
+    max-height: calc(100% - 60px);
     max-width: 900px;
     border-radius: 30px;
     background-color: rgba(0,0,0,0.8);
@@ -237,6 +238,7 @@ const Container = styled.div`
     flex-direction: column;
     position: relative;
     border-top-right-radius: 0;
+    margin-top: 30px;
 
     @media (max-width: 500px) {
        max-width: 100%;
@@ -255,6 +257,11 @@ const Container = styled.div`
         position: relative;
         @media (max-width: 500px) {
             margin-top: 20px;
+        }
+
+        .no-reviews{
+            font-size: 13px;
+            color: lightgray;
         }
         button{
             background-color: ${mainRed};
@@ -291,8 +298,9 @@ const Container = styled.div`
             &:focus{
                 outline: none;
             }
-
-          
+            @media (max-width: 500px) {
+                height: 50px;
+            }
         }
         .cant-review{
             margin-top: 20px;
@@ -319,6 +327,9 @@ const Container = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-between;
+            @media (max-width: 500px) {
+                margin-top: 10px;
+            }
           
         }
         h1{

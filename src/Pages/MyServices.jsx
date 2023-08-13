@@ -6,39 +6,57 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import MyServiceItem from "../Components/MyServiceItem";
+import { mainRed } from "../Colors/mainColors";
+import { BsFillPlusCircleFill } from "react-icons/bs";
+import { AiFillLeftCircle } from "react-icons/ai"
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function MyServices() {
-    const {user,categories,getUserInfo} = useContext(UserContext);
+    const { user, categories, getUserInfo } = useContext(UserContext);
 
-   
+
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    useEffect(()=>{
-        console.log(user);
+    const size = useWindowSize();
+    useEffect(() => {
         getUserInfo();
-        if(!localStorage.getItem("token")) return navigate('/');
-    },[])
-// name, description, category, photo, price, available = false, service_id =8 
+        if (!localStorage.getItem("token")) return navigate('/');
+    }, [])
+    // name, description, category, photo, price, available = false, service_id =8 
     return (
         <PageContainer>
-            <h1 className="title">My Services</h1>
+            <h1 className="title">
+                <button onClick={() => navigate('/')}>{size.width <=800 ? null : <AiFillLeftCircle />} {size.width <= 800 ? "<": "Home"}</button>
+                My Services
+            </h1>
             <ServicesList>
-                {user && user.services.map((service) =>{
-                    return <MyServiceItem 
-                    available={service.available} 
-                    category={categories[service.category]} 
-                    price={service.price} 
-                    name={service.name} 
-                    photo={service.photo} 
-                    description={service.description}
-                    service_id={service.id}
-                    key={service.id}
+                <button onClick={()=> navigate('/create-service')} className="create-btn">
+                    <BsFillPlusCircleFill />Create new <BsFillPlusCircleFill />
+                </button>
+                <div className="indicator">
+                    <span>Photo</span>
+                    <span>Name</span>
+                    {size.width > 500 && <span>Description</span>}
+                    <span>{size.width > 500 ? "Category" : "Cat"}</span>
+                    <span>Price</span>
+                    <span>Status</span>
+                </div>
+                {user && user.services.map((service) => {
+                    return <MyServiceItem
+                        available={service.available}
+                        category={categories[service.category]}
+                        price={service.price}
+                        name={service.name}
+                        photo={service.photo}
+                        description={service.description}
+                        service_id={service.id}
+                        key={service.id}
                     />
                 })}
 
-                {!user&& <p className="no-services">You should not be here</p>}
-                { user &&  user.services.length == 0 && <p className="no-services">No services to show!</p>}
-                
+                {!user && <p className="no-services">You should not be here</p>}
+                {user && user.services.length == 0 && <p className="no-services">No services to show!</p>}
+
             </ServicesList>
         </PageContainer>
     );
@@ -60,9 +78,69 @@ const ServicesList = styled.div`
     height: fit-content;
     position: relative;
 
+    @media (max-width: 500px) {
+       padding: 0;
+       padding-top: 20px;
+       padding-bottom: 20px;
+    }
+
     @media (max-width: 800px) {
         max-width: 100%;
         border-radius: 0;
+    }
+
+    .indicator{
+        padding: 10px;
+        width: 100%;
+        color: white;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap:15px;
+        
+        span{
+            @media (max-width: 500px) {
+                font-size: 15px;
+            }
+            overflow: hidden;
+            &:nth-child(1)
+            {
+                width: 100%;
+                max-width: 70px;
+            }
+            &:nth-child(2)
+            {
+                width: 100%;
+                max-width: 100px;
+            }
+            &:nth-child(3)
+            {
+                width: 100%;
+                max-width: 250px;
+                @media (max-width: 500px) {
+                    text-align: center;
+                    max-width: 50px;
+                }
+            }
+            &:nth-child(4)
+            {
+                width: 100%;
+                max-width: 100px;
+                
+            }
+            &:nth-child(5)
+            {
+                width: 100%;
+                max-width: 50px;
+            }
+            &:nth-child(6)
+            {
+                width: 100%;
+                max-width: 100px;
+                text-align: right;
+            }
+        }
     }
 
 
@@ -78,6 +156,31 @@ const ServicesList = styled.div`
            white-space: nowrap;
         }
     }
+
+    .create-btn{
+            background-color: ${mainRed};
+            border: 1px solid transparent;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            color: white;
+            width: 100%;
+            gap: 10px;
+            &:hover{
+                background-color: white;
+                color: ${mainRed};
+                border: 1px solid ${mainRed};
+            }
+
+            @media (max-width: 500px) {
+                max-width: calc(100% - 20px);
+            }
+    }
 `;
 const PageContainer = styled.main`
 
@@ -89,12 +192,50 @@ const PageContainer = styled.main`
 
     .title{
         color: white;
+        width: 100%;
+        max-width: 800px;
         font-size: 50px;
         margin-top: 100px;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+       
+        button{
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            color: white;
+            width: fit-content;
+            gap: 10px;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            &:hover{
+               opacity: 50%;
+            }
 
-        @media (max-width: 400px) {
-        font-size: 40px;
+            @media (max-width: 800px) {
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+                font-size: 35px;
+            }
+
+    }
+
+        @media (max-width: 450px) {
+        font-size: 35px;
     }
     }
 

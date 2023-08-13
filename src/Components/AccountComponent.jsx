@@ -41,6 +41,29 @@ export default function AccountComponent() {
         }
     }
 
+    function formatPhone(value) {
+        const num = value.replace(/\D/g, '');
+        let formatedNumber = '';
+    
+        if (num.length >= 3) {
+            formatedNumber = `(${num.substring(0, 2)}) `;
+    
+            if (num.length >= 8) {
+                formatedNumber += `${num.substring(2, 7)}-`;
+    
+                if (num.length > 6) {
+                    formatedNumber += num.substring(7);
+                }
+            } else {
+                formatedNumber += num.substring(2);
+            }
+        } else {
+            formatedNumber = num;
+        }
+    
+        return formatedNumber;
+    }
+
     function searchCEP() {
         setLoadingPostal(true);
 
@@ -92,7 +115,7 @@ export default function AccountComponent() {
             email: registerEmail,
             password: registerPassword,
             confirmPassword:registerPassword2,
-            cellphone: Number(registerPhone),
+            cellphone: parseInt(registerPhone.replace(/\D/g, "")),
             city:registerCity
         }
 
@@ -157,7 +180,7 @@ export default function AccountComponent() {
                         <CustomInput autocomplete="false" input_value={registerEmail} set_input_value={(e) => setRegisterEmail(e)} type={"email"} name={"email"} is_required={true} placeholder={"E-mail"} />
                         <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPassword} set_input_value={(e) => setRegisterPassword(e)} type={"password"} name={"password"} is_required={true} placeholder={"Password"} content_reveal={"false"} />
                         <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPassword2} set_input_value={(e) => setRegisterPassword2(e)} type={"password"} name={"password2"} is_required={true} placeholder={"Confirm Password"} content_reveal={"false"} />
-                        <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPhone} set_input_value={(e) => setRegisterPhone(e)} type={"number"} name={"phone"} is_required={true} placeholder={"Phone"} content_reveal={"false"} max={10} />
+                        <CustomInput placeholder_color={"white"} autocomplete="false" input_value={registerPhone} set_input_value={(e) => setRegisterPhone(formatPhone(e))} type={"text"} name={"phone"} is_required={true} pattern='\(\d{2}\) \d{5}-\d{4}'  placeholder={"Phone"} content_reveal={"false"} max={15} />
                         <div className="postal-container">
                             <p>City: {registerCity}</p>
                             <input onKeyDown={handleKeyPress} minLength={8} value={postalCode} onChange={(e) => formatPostalCode(e.target.value)} className="postal" required type="text" placeholder="Postal Code" id="postal" name="postal" />

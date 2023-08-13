@@ -118,7 +118,7 @@ export default function EditService() {
 
     return (
         <PageContainer>
-            <h1>Edit service</h1>
+            <h1><button onClick={() => navigate('/')}>{"<"}</button>Edit service</h1>
             <CreationComponent onSubmit={createService}>
                 <div className="main-info">
                     <div className="input-container">
@@ -271,11 +271,52 @@ const PageContainer = styled.main`
     h1{
         color: white;
         font-size: 50px;
-        margin-top: 100px;
+        margin-top: 60px;
 
-        @media (max-width: 400px) {
-        font-size: 40px;
-    }
+        width: 100%;
+        max-width: 620px;
+        text-align: center;
+        position: relative;
+
+        @media (max-width: 500px) {
+            font-size: 35px;
+        }
+
+        
+       
+            button{
+                background-color: rgba(0,0,0,0.3);
+                border: 1px solid transparent;
+                border-radius: 10px;
+                box-sizing: border-box;
+                padding: 10px;
+                font-size: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                color: white;
+                width: fit-content;
+                gap: 10px;
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                transform: translateY(-50%);
+                &:hover{
+                    opacity: 50%;
+                }
+
+                @media (max-width: 800px) {
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    justify-content: center;
+                    font-size: 35px;
+                }
+
+        }
     }
 
 `;

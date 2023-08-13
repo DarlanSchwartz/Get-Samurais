@@ -8,11 +8,13 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { mainRed } from "../Colors/mainColors";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function MyServiceItem({ name, description, category, photo, price, available, service_id}) {
 // { name, owner, description, category, photo, price, location, available, owner_id, service_id }
 const {user , categories , getUserInfo} = useContext(UserContext);
 const [loading,setLoading] = useState(false);
+const size = useWindowSize();
 const navigate = useNavigate();
     function askDeleteService() {
         Swal.fire({
@@ -84,8 +86,8 @@ const navigate = useNavigate();
             <Content>
                 <img src={photo} alt="" />
                 <h1>{name}</h1>
-                <p>{description?.substring(0, 30)}</p>
-                <p>{category}</p>
+                {size.width > 500 && <p>{description?.substring(0, 30)}</p>}
+                 <p>{size.width > 500 ? category : <img className="category-icon" src={`/filter/${category}.svg`}/>}</p>
                 <p>${parseFloat(price.replace(/[^0-9.]/g, ''))}</p>
                 <button disabled={loading} onClick={changeServiceState} className={available ? "available" : ""}>
                     {<img src={`/${available ? "available" : "unavaible"}.png`} alt="" />}
@@ -126,6 +128,14 @@ const Content = styled.div`
     width: 100%;
     padding: 10px;
     gap: 15px;
+
+    .category-icon{
+        width: 30px;
+    }
+
+    @media (max-width: 500px) {
+      border-radius: 0;
+    }
     
     border-top-right-radius: 0;
 
@@ -167,6 +177,12 @@ const Content = styled.div`
         overflow: hidden;
         white-space: nowrap;
         height: 100%;
+        
+
+        @media (max-width: 500px) {
+            max-width: 200px;
+            font-size: 16px;
+        }
     }
 
     p{
@@ -177,15 +193,23 @@ const Content = styled.div`
         display: flex;
         overflow: hidden;
         white-space: nowrap;
+        @media (max-width: 500px) {
+            font-size: 16px;
+        }
         &:nth-child(3)
         {
             width: 100%;
             max-width: 300px;
+            @media (max-width: 500px) {
+                justify-content: center;
+                max-width: 50px;
+            }
         }
         &:nth-child(4)
         {
             width: 100%;
             max-width: 100px;
+            
         }
         &:nth-child(5)
         {
