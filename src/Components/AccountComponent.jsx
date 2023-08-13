@@ -158,10 +158,10 @@ export default function AccountComponent() {
 
 
     return (
-        <LoginModal onClick={() => setShowAuthenticate(false)}>
+        <LoginModal onMouseDown={() => setShowAuthenticate(false)}>
             {showLogin ?
 
-                <AuthenticationContainer onClick={(e) => e.stopPropagation()}>
+                <AuthenticationContainer onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                     <h1><img src="/mini-samurai2.png" alt="" /> Sign in <img src="/mini-samurai.png" alt="" /></h1>
                     <form onSubmit={Login}>
                         <CustomInput autocomplete="true" input_value={loginEmail} set_input_value={(e) => setLoginEmail(e)} type={"email"} name={"email"} is_required={true} placeholder={"E-mail"} />
@@ -173,7 +173,7 @@ export default function AccountComponent() {
 
                 :
 
-                <AuthenticationContainer onClick={(e) => e.stopPropagation()}>
+                <AuthenticationContainer  onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                     <h1><img src="/mini-samurai2.png" alt="" /> Sign up <img src="/mini-samurai.png" alt="" /></h1>
                     <form onSubmit={Register}>
                         <CustomInput autocomplete="false" input_value={registerName} set_input_value={(e) => setRegisterName(e)} type={"text"} name={"name"} is_required={true} placeholder={"Name"} />
