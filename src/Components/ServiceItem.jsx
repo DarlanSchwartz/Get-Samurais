@@ -88,6 +88,7 @@ p{
     height: 100%;
     max-height: 100px;
     overflow: hidden;
+    line-height: 20px;
 }
 
 h6,h5{
