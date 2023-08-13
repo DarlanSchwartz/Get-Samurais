@@ -222,6 +222,11 @@ const AuthenticationContainer = styled.section`
     flex-direction: column;
     background-image: url("/authentication-image.png");
     background-size: cover;
+    @media (max-width: 400px)  {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+    }
     .postal-container{
         width: 100%;
         display: flex;

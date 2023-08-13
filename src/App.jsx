@@ -44,7 +44,9 @@ export default function App() {
 
   function getUserInfo(token)
   {
+    
     const tokenValue = token ? token : localStorage.getItem("token");
+    if(!tokenValue) return;
       axios.get(`${import.meta.env.VITE_API_URL}/users/me`,{headers:{Authorization:tokenValue}})
       .then(res =>{
         //console.log(res.data);

@@ -60,7 +60,7 @@ export default function Header() {
         setShowAuthenticate(true);
     }
     return (
-        <HeaderContainer $y ={y}>
+        <HeaderContainer $y ={showAuthenticate ? 0 : y}>
             <Content>
                 <Logo />
                 {(y > 100 && location.pathname == '/') && <SearchBar>

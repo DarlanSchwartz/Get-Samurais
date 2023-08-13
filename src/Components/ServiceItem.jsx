@@ -5,29 +5,34 @@ import UserContext from "../Contexts/UserContext";
 import StarRating from "./StarRating";
 import { mainRed, secondRed } from "../Colors/mainColors";
 
-export default function ServiceItem({ name, owner, description, category, photo, price, location, available,owner_id,service_id,rating,reviews }) {
+export default function ServiceItem({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews }) {
     const { setShowService } = useContext(UserContext);
 
 
     return (
-        <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available,owner_id,service_id,rating,reviews })}>
-            {/* <StarRating initialRating={rating}/> */}
-            <ServiceImage>
-                <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />
-                {!available && <img className="not-available" src="/not-available.png" alt="" /> }  
-            </ServiceImage>
-            <Banner className="banner">
-                <h1>{name ? name : "Service name"} <span>{price ? price : "$ 0"}</span></h1>
-                <p>{description ? description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}</p>
-                <h6>
-                    <img src={`/filter/${category ? category : "All"}.svg`} alt="" />
-                    {category ? category : "All"}
-                    
-                </h6>
-                <h6><BsFillPersonFill />{owner ? owner : "Owner name"}</h6>
-                <h5>Rating: <StarRating size="20px" initialRating={rating}/></h5>
-            </Banner>
-        </Container>
+        <>
+            {
+                available &&
+                <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews })}>
+                    {/* <StarRating initialRating={rating}/> */}
+                    <ServiceImage>
+                        <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />
+                        {!available && <img className="not-available" src="/not-available.png" alt="" />}
+                    </ServiceImage>
+                    <Banner className="banner">
+                        <h1>{name ? name : "Service name"} <span className="gradient-text">{price ? price : "$ 0"}</span></h1>
+                        <p>{description ? description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. At soluta eum eos velit enim culpa iure fugiat molestias fuga non cumque, eius corporis autem tenetur sunt reiciendis commodi eaque? Eum?"}</p>
+                        <h6>
+                            <img src={`/filter/${category ? category : "All"}.svg`} alt="" />
+                            {category ? category : "All"}
+
+                        </h6>
+                        <h6><BsFillPersonFill />{owner ? owner : "Owner name"}</h6>
+                        <h5>Rating: <StarRating size="20px" initialRating={rating} /></h5>
+                    </Banner>
+                </Container>
+            }
+        </>
     );
 }
 
@@ -66,6 +71,8 @@ display: flex;
 flex-direction: column;
 gap: 10px;
 overflow: hidden;
+
+
 h1{
     font-size: 35px !important;
     font-family: Bonzai;
@@ -78,7 +85,7 @@ h1{
     span{
         font-family: sans-serif;
         font-size: 20px;
-        color: ${secondRed};
+        color: #ff586c;
         font-weight: bold;
     }
 }
@@ -90,6 +97,7 @@ p{
     overflow: hidden;
     line-height: 20px;
 }
+
 
 h6,h5{
     display: flex;

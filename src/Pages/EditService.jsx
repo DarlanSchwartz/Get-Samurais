@@ -123,7 +123,7 @@ export default function EditService() {
                 <div className="main-info">
                     <div className="input-container">
                         <label htmlFor="service-name">Name</label>
-                        <input ref={nameRef} required id="service-name" name="service-name" type="text" placeholder="e.g Carpentry" maxLength={100} />
+                        <input ref={nameRef} required id="service-name" name="service-name" type="text" placeholder="e.g Carpentry"  maxLength={21} max={21}  />
                     </div>
                     <div className="input-container">
                         <label htmlFor="price">Price</label>
@@ -141,7 +141,7 @@ export default function EditService() {
 
                 <div className="input-container">
                     <label htmlFor="description">Description</label>
-                    <textarea ref={descriptionRef} required id="description" name="description" type="text" placeholder="e.g I make clothes for almost 10 years, i am good!" maxLength={400} />
+                    <textarea ref={descriptionRef} required id="description" name="description" type="text" placeholder="e.g I make clothes for almost 10 years, i am good!"  max={150} maxLength={150} />
                 </div>
 
                 <div className="input-container">

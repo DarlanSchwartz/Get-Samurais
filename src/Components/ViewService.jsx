@@ -5,7 +5,7 @@ import UserContext from "../Contexts/UserContext";
 import { BsFillPersonFill } from "react-icons/bs";
 import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
-import { BiSolidEdit } from 'react-icons/bi';
+import { BiSolidEdit, BiSolidPaperPlane } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
 import { AiFillQuestionCircle, AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
@@ -14,6 +14,7 @@ import StarRating from "./StarRating";
 import Reviews from "./Reviews";
 import { blue, mainRed, secondRed } from "../Colors/mainColors";
 import { useWindowSize } from "@uidotdev/usehooks";
+
 
 export default function ViewService() {
 
@@ -185,7 +186,7 @@ export default function ViewService() {
                             <label htmlFor="write-review">Write your review </label>
                             <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
                             <textarea ref={reviewRef} type="text" placeholder="e.g This was a great service!" />
-                            <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}</button>
+                            <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}<BiSolidPaperPlane/></button>
                         </>
                     }
                     {
@@ -249,6 +250,7 @@ const Container = styled.div`
         display: flex;
         height: 100%;
         max-height: 330px;
+        gap: 10px;
     }
 
     .bottom{
@@ -274,10 +276,17 @@ const Container = styled.div`
             bottom: 5px;
             right: 5px;
             border: 1px solid transparent;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            gap: 5px;
             &:hover{
                 color: ${mainRed};
                 background-color: white;
                 border: 1px solid ${mainRed};
+                *{
+                    color: ${mainRed};
+                }
             }
         }
         textarea{
@@ -347,6 +356,12 @@ const Container = styled.div`
     img{
         width: 100%;
         border-radius: 10px;
+        aspect-ratio: 1;
+        
+    }
+    .right{
+        min-height: 168px;
+        min-width: 168px;
     }
 
     .left,.right{
@@ -377,11 +392,16 @@ const Container = styled.div`
                 width: 15px;
             }
 
-
+           &:first-child{
+            overflow: hidden;
+            height: 30px;
+            flex-shrink: 0;
+           }
         }
         p{
             line-height: 19px;
-
+            line-break: anywhere;
+            
             span{
                 color: ${secondRed};
                 font-weight: bold;
