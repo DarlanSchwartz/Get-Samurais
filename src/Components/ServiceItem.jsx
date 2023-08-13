@@ -5,7 +5,7 @@ import UserContext from "../Contexts/UserContext";
 import StarRating from "./StarRating";
 import { mainRed, secondRed } from "../Colors/mainColors";
 
-export default function ServiceItem({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews }) {
+export default function ServiceItem({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews,phone }) {
     const { setShowService } = useContext(UserContext);
 
 
@@ -13,7 +13,7 @@ export default function ServiceItem({ name, owner, description, category, photo,
         <>
             {
                 available &&
-                <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews })}>
+                <Container onClick={() => setShowService({ name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews,phone })}>
                     {/* <StarRating initialRating={rating}/> */}
                     <ServiceImage>
                         <img src={`${photo ? photo : "/samurai-example.png"}`} alt="" />

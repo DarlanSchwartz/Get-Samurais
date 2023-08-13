@@ -6,6 +6,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import { RotatingTriangles } from "react-loader-spinner";
 import { MdOutlineSegment } from "react-icons/md";
 import { mainRed } from "../Colors/mainColors";
+import formatPhone from "../Utils/formatPhone";
 
 export default function ServicesComponent() {
     const { categories, services, getServices, searchText, setSearchText, currentFilter, setCurrentFilter, user } = useContext(UserContext);
@@ -69,6 +70,7 @@ export default function ServicesComponent() {
                                     photo={service.photo}
                                     rating={service.overall_rating}
                                     reviews={service.reviews}
+                                    phone={formatPhone(service.owner_phone)}
                                 />
                             );
                         }

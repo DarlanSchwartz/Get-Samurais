@@ -7,7 +7,7 @@ import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiSolidEdit, BiSolidPaperPlane } from 'react-icons/bi';
 import { useNavigate } from "react-router-dom";
-import { AiFillQuestionCircle, AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
+import { AiFillQuestionCircle, AiFillCheckCircle, AiFillCloseCircle, AiFillPhone } from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
 import StarRating from "./StarRating";
@@ -19,7 +19,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 export default function ViewService() {
 
     const { showService, setShowService, user, getServices, categories, setShowAuthenticate } = useContext(UserContext);
-    const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews } = showService;
+    const { name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews,phone } = showService;
     const reviewRef = useRef();
     const [distance, setDistance] = useState();
     const [loading, setLoading] = useState(false);
@@ -73,6 +73,17 @@ export default function ViewService() {
                 deleteService();
             }
         })
+    }
+
+    function ask()
+    {
+        if(!user) return setShowAuthenticate(true);
+    }
+
+    function hire()
+    {
+        if(!user) return setShowAuthenticate(true);
+
     }
 
     function publishReview() {
@@ -161,7 +172,8 @@ export default function ViewService() {
                         <h1> {name}</h1>
                         <p>{description}</p>
                         <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
-                        <h1><BsFillPersonFill />Samurai: {user && owner_id == user.id ? "You" : owner}</h1>
+                        <h1><BsFillPersonFill />{user && owner_id == user.id ? "You" : owner}</h1>
+                        <h1 className="phone"><AiFillPhone/> {phone}</h1>
                         {(user && owner_id !== user.id) && <p className="distance">{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
                         <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
                     </div>
@@ -169,8 +181,8 @@ export default function ViewService() {
 
                         <img src={photo} alt="" />
                         <div className="actions">
-                            <button className="ask"><AiFillQuestionCircle /> {size.width <= 500 ? "" : "Ask something"}</button>
-                            <button><AiFillCheckCircle /> Hire</button>
+                            <button onClick={ask} className="ask"><AiFillQuestionCircle /> {size.width <= 500 ? "" : "Ask something"}</button>
+                            <button onClick={hire}><AiFillCheckCircle /> Hire</button>
                         </div>
                         <div className="rating">
                             <StarRating size={size.width <=500 ? "15px" : "30px"} initialRating={rating} />
@@ -375,6 +387,10 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         gap: 30px;
+        .phone{
+            white-space: nowrap;
+            font-size: 15px;
+        }
         @media (max-width: 500px) {
             gap: 20px;
         }

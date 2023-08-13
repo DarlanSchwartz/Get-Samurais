@@ -7,6 +7,7 @@ import { BsSearch } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { blue, mainRed } from "../Colors/mainColors";
+import formatPhone from "../Utils/formatPhone";
 
 export default function AccountComponent() {
     const {setShowAuthenticate,getUserInfo } = useContext(UserContext);
@@ -40,29 +41,6 @@ export default function AccountComponent() {
         else {
             setRegisterCity(defaultPostalCode);
         }
-    }
-
-    function formatPhone(value) {
-        const num = value.replace(/\D/g, '');
-        let formatedNumber = '';
-    
-        if (num.length >= 3) {
-            formatedNumber = `(${num.substring(0, 2)}) `;
-    
-            if (num.length >= 8) {
-                formatedNumber += `${num.substring(2, 7)}-`;
-    
-                if (num.length > 6) {
-                    formatedNumber += num.substring(7);
-                }
-            } else {
-                formatedNumber += num.substring(2);
-            }
-        } else {
-            formatedNumber = num;
-        }
-    
-        return formatedNumber;
     }
 
     function searchCEP() {
