@@ -1,15 +1,29 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { mainRed } from "../Colors/mainColors";
 
-export default function CustomInput({ type, placeholder, is_required, name, content_reveal,input_value, set_input_value,autocomplete,max,placeholder_color,pattern, min , minLen}) {
+export default function CustomInput({ type, placeholder, is_required, name, content_reveal, input_value, set_input_value, autocomplete, max, placeholder_color, pattern, min, minLen }) {
     const [focused, setFocused] = useState(false);
-    const [reveal,setReveal] =  useState(false);
+    const [reveal, setReveal] = useState(false);
+    const ref = useRef();
+    const [valid, setValid] = useState(false);
 
     return (
-        <CustomInputContainer $focused={!focused && input_value == "" ? "false" : "true"} $placeholder_color={placeholder_color}>
+        <CustomInputContainer $valid={valid.toString()} $focused={!focused && input_value == "" ? "false" : "true"} $placeholder_color={placeholder_color}>
             <label className="placeholder" htmlFor={name}>{placeholder}</label>
-            <input minLength={minLen ? minLen : 0} min={min ? min : 0} maxLength={max ? max : 300} autoComplete={name} value={input_value} onChange={(e) => set_input_value(e.target.value)} type={content_reveal == "true" && reveal ? "text" : type} name={name} id={name} required={is_required} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+            <input
+                ref={ref}
+                minLength={minLen ? minLen : 0}
+                min={min ? min : 0}
+                maxLength={max ? max : 300}
+                autoComplete={name}
+                value={input_value}
+                onChange={(e) => { set_input_value(e.target.value); setValid(ref?.current?.validity?.valid) }}
+                type={content_reveal == "true" && reveal ? "text" : type}
+                name={name}
+                id={name}
+                required={is_required}
+                onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
             {
                 content_reveal == "true" &&
 
@@ -34,7 +48,7 @@ const CustomInputContainer = styled.section`
         position: absolute;
         left: 0;
         top: ${(props) => props.$focused == "true" ? "-5px" : "20%"};
-        color: ${(props) => props.$placeholder_color};
+        color: ${(props) => props.$valid !== 'true' ? "red" : props.$placeholder_color};
         font-size: ${(props) => props.$focused == "true" ? "10px" : "16px"};
         user-select: none;
     }
@@ -57,7 +71,6 @@ const CustomInputContainer = styled.section`
                 color: ${mainRed};
             }
         }
-
     }
 
     .show-pass{

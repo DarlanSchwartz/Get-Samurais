@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import CustomInput from "./CustomInput";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import UserContext from "../Contexts/UserContext";
 import axios from "axios";
 import { BsSearch } from "react-icons/bs";
@@ -9,9 +9,9 @@ import { toast } from "react-toastify";
 import { blue, mainRed } from "../Colors/mainColors";
 
 export default function AccountComponent() {
-    const { user, setUser, setShowAuthenticate,getUserInfo } = useContext(UserContext);
-    const defaultPostalCode = "Insert postal code";
-    const invalidPostalCode = "Invalid postal code";
+    const {setShowAuthenticate,getUserInfo } = useContext(UserContext);
+    const defaultPostalCode = "Unknown";
+    const invalidPostalCode = "Unknown";
 
     const [showLogin, setShowLogin] = useState(true);
 
@@ -24,6 +24,7 @@ export default function AccountComponent() {
     const [registerPassword2, setRegisterPassword2] = useState("");
     const [registerPhone, setRegisterPhone] = useState("");
     const [registerCity, setRegisterCity] = useState(defaultPostalCode);
+    const refRegisterCity = useRef();
     const [postalCode, setPostalCode] = useState("");
 
     const [loadingPostal, setLoadingPostal] = useState(false);
@@ -109,6 +110,10 @@ export default function AccountComponent() {
 
     function Register(e) {
         e.preventDefault();
+        if(registerCity == invalidPostalCode){
+            //refRegisterCity.current.
+        }
+
         if(registerCity == defaultPostalCode || registerCity == invalidPostalCode) return;
         const registerObj = {
             name:registerName,
@@ -183,7 +188,7 @@ export default function AccountComponent() {
                         <CustomInput placeholder_color={"white"} minLen={15} min={15} autocomplete="false" input_value={registerPhone} set_input_value={(e) => setRegisterPhone(formatPhone(e))} type={"text"} name={"phone"} is_required={true} pattern='\(\d{2}\) \d{5}-\d{4}'  placeholder={"Phone"} content_reveal={"false"} max={15} />
                         <div className="postal-container">
                             <p>City: {registerCity}</p>
-                            <input onKeyDown={handleKeyPress} minLength={8} value={postalCode} onChange={(e) => formatPostalCode(e.target.value)} className="postal" required type="text" placeholder="Postal Code" id="postal" name="postal" />
+                            <input ref={refRegisterCity} onKeyDown={handleKeyPress} minLength={8} value={postalCode} onChange={(e) => formatPostalCode(e.target.value)} className="postal" required type="text" placeholder="Postal Code" id="postal" name="postal" />
                             <button disabled={loadingPostal} onClick={searchCEP} className="search-btn" type="button"><BsSearch /></button>
                         </div>
                         <button disabled={loading}>{loading ? "Wait.." : "Sign up"}</button>
@@ -257,7 +262,12 @@ const AuthenticationContainer = styled.section`
             &:focus{
                 outline: 0;
             }
-
+            &:invalid{
+                border: 1px solid red;
+                &::placeholder{
+                    color: red;
+                }
+            }
            
         }
 
