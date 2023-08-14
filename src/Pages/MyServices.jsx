@@ -118,8 +118,10 @@ const ServicesList = styled.div`
         gap:15px;
         
         span{
+            height: 25px;
             @media (max-width: 500px) {
                 font-size: 15px;
+                height: 20px;
             }
             overflow: hidden;
             &:nth-child(1)

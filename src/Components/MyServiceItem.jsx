@@ -149,6 +149,7 @@ const Content = styled.div`
 
     .category-icon{
         width: 30px;
+        height: 30px;
     }
 
     @media (max-width: 500px) {
@@ -247,6 +248,21 @@ const Content = styled.div`
 
 const Container = styled.div`
     position: relative;
+    border-radius: 20px;
     width: 100%;
     height: 80px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    @media (max-width: 500px) {
+      border-radius: 0;
+    }
+    &:hover{
+        border: 1px solid ${mainRed};
+        @media (max-width: 500px) {
+            border-top: 1px solid ${mainRed};
+            border-bottom: 1px solid ${mainRed};
+            border-right: 1px solid transparent;
+            border-left: 1px solid transparent;
+        }
+    }
 `;
