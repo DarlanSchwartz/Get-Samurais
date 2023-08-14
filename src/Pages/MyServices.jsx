@@ -10,37 +10,40 @@ import { mainRed } from "../Colors/mainColors";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { AiFillLeftCircle } from "react-icons/ai"
 import { useWindowSize } from "@uidotdev/usehooks";
+import { RotatingTriangles } from "react-loader-spinner";
 
 export default function MyServices() {
-    const { user, categories, getUserInfo } = useContext(UserContext);
+    const { user, categories, getUserInfo, loadingUser } = useContext(UserContext);
 
 
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
     const size = useWindowSize();
     useEffect(() => {
         getUserInfo();
         if (!localStorage.getItem("token")) return navigate('/');
-    }, [])
-    // name, description, category, photo, price, available = false, service_id =8 
+    }, []);
+
     return (
         <PageContainer>
             <h1 className="title">
-                <button onClick={() => navigate('/')}>{size.width <=800 ? null : <AiFillLeftCircle />} {size.width <= 800 ? "<": "Home"}</button>
+                <button onClick={() => navigate('/')}>{size.width <= 800 ? null : <AiFillLeftCircle />} {size.width <= 800 ? "<" : "Home"}</button>
                 My Services
             </h1>
             <ServicesList>
-                <button onClick={()=> navigate('/create-service')} className="create-btn">
+                <button onClick={() => navigate('/create-service')} className="create-btn">
                     <BsFillPlusCircleFill />Create new <BsFillPlusCircleFill />
                 </button>
-                <div className="indicator">
-                    <span>Photo</span>
-                    <span>Name</span>
-                    {size.width > 500 && <span>Description</span>}
-                    <span>{size.width > 500 ? "Category" : "Cat"}</span>
-                    <span>Price</span>
-                    <span>Status</span>
-                </div>
+                {
+                    (!loadingUser && user && user?.services?.length > 0) &&
+                    <div className="indicator">
+                        <span>Photo</span>
+                        <span>Name</span>
+                        {size.width > 500 && <span>Description</span>}
+                        <span>{size.width > 500 ? "Category" : "Cat"}</span>
+                        <span>Price</span>
+                        <span>Status</span>
+                    </div>
+                }
                 {user && user.services.map((service) => {
                     return <MyServiceItem
                         available={service.available}
@@ -51,10 +54,25 @@ export default function MyServices() {
                         description={service.description}
                         service_id={service.id}
                         key={service.id}
+                        owner_id={service.owner_id}
+                        rating={service.overall_rating}
                     />
                 })}
 
-                {!user && <p className="no-services">You should not be here</p>}
+                {(!user && !localStorage.getItem("token")) && <p className="no-services">You should not be here</p>}
+                {loadingUser &&
+                    <div className="loading-gif">
+                        <RotatingTriangles
+                            visible={true}
+                            height="80"
+                            width="80"
+                            ariaLabel="rotating-triangels-loading"
+                            wrapperClass="inner"
+                            colors={["red", "white", "black"]}
+                        />
+                        <p>Loading...</p>
+                    </div>
+                }
                 {user && user.services.length == 0 && <p className="no-services">No services to show!</p>}
 
             </ServicesList>
@@ -143,6 +161,17 @@ const ServicesList = styled.div`
         }
     }
 
+    .loading-gif{
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+
+        p{
+            color: white;
+        }
+    }
 
     .no-services{
         color: white;
@@ -158,28 +187,28 @@ const ServicesList = styled.div`
     }
 
     .create-btn{
-            background-color: ${mainRed};
-            border: 1px solid transparent;
-            border-radius: 10px;
-            box-sizing: border-box;
-            padding: 10px;
-            font-size: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-            color: white;
-            width: 100%;
-            gap: 10px;
-            &:hover{
-                background-color: white;
-                color: ${mainRed};
-                border: 1px solid ${mainRed};
-            }
+        background-color: ${mainRed};
+        border: 1px solid transparent;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        color: white;
+        width: 100%;
+        gap: 10px;
+        &:hover{
+            background-color: white;
+            color: ${mainRed};
+            border: 1px solid ${mainRed};
+        }
 
-            @media (max-width: 500px) {
-                max-width: calc(100% - 20px);
-            }
+        @media (max-width: 500px) {
+            max-width: calc(100% - 20px);
+        }
     }
 `;
 const PageContainer = styled.main`

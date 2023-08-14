@@ -6,7 +6,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import distanceBetweenLocations from "../Utils/distanceBetweenLocations";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiSolidEdit, BiSolidPaperPlane } from 'react-icons/bi';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AiFillQuestionCircle, AiFillCheckCircle, AiFillCloseCircle, AiFillPhone } from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -14,6 +14,7 @@ import StarRating from "./StarRating";
 import Reviews from "./Reviews";
 import { blue, mainRed, secondRed } from "../Colors/mainColors";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { toast } from "react-toastify";
 
 
 export default function ViewService() {
@@ -26,6 +27,7 @@ export default function ViewService() {
     const [reviewRating, setReviewRating] = useState(1);
     const [userCanWriteReview, setUserCanWriteReview] = useState(false);
     const size = useWindowSize();
+    const locationUrl = useLocation();
 
     const navigate = useNavigate();
 
@@ -78,11 +80,45 @@ export default function ViewService() {
     function ask()
     {
         if(!user) return setShowAuthenticate(true);
+        if(user && user.id == owner_id){
+            Swal.fire({
+                title: 'Error',
+                color: "white",
+                text: 'You cannot ask to yourself',
+                icon:"error",
+                width: 300,
+                confirmButtonText: `<p style="color:white">Ok</p>`,
+                cancelButtonColor: mainRed,
+                confirmButtonColor: mainRed,
+                showCancelButton: false,
+                imageAlt: 'Custom image',
+                background: "rgba(0,0,0,0.8)",
+            });
+        }
     }
 
     function hire()
     {
         if(!user) return setShowAuthenticate(true);
+
+        if(user && user.id == owner_id)
+        {
+            Swal.fire({
+                title: 'Error',
+                color: "white",
+                text: 'You cannot hire yourself',
+                icon:"error",
+                width: 300,
+                confirmButtonText: `<p style="color:white">Ok</p>`,
+                cancelButtonColor: mainRed,
+                confirmButtonColor: mainRed,
+                showCancelButton: false,
+                imageAlt: 'Custom image',
+                background: "rgba(0,0,0,0.8)",
+            });
+
+            return;
+        }
         setShowService(null);
         navigate(`/hire/${service_id}`);
 
@@ -138,6 +174,16 @@ export default function ViewService() {
         axios.delete(`${import.meta.env.VITE_API_URL}/service/${service_id}`, { headers: { Authorization: localStorage.getItem("token") } })
             .then(res => {
                 getServices();
+                toast.success('Removed service!', {
+                    position: "bottom-left",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             }).catch(error => {
                 Swal.fire({
                     title: `Error ${error.response ? error.response.status : ""}`,
@@ -156,7 +202,7 @@ export default function ViewService() {
 
                 <Actions>
                     {
-                        user && owner_id == user.id &&
+                        user && owner_id == user.id && locationUrl.pathname == "/" &&
                         <>
                             <BiSolidEdit className="action" title="Edit" onClick={(e) => {
                                 e.stopPropagation();
@@ -175,7 +221,7 @@ export default function ViewService() {
                         <p>{description}</p>
                         <h1><img src={`/filter/${category}.svg`} alt="" />{category}</h1>
                         <h1><BsFillPersonFill />{user && owner_id == user.id ? "You" : owner}</h1>
-                        <h1 className="phone"><AiFillPhone/> {phone}</h1>
+                        {phone && <h1 className="phone"><AiFillPhone/> {phone}</h1>}
                         {(user && owner_id !== user.id) && <p className="distance">{Number(distance) < 1 ? "This Samurai is from your location" : "Distance from you:"} {distance && Number(distance) < 1 ? "" : distance ? distance + " Km" : "Caculating.."}</p>}
                         <p>{available ? (<>Price: <span>{price}</span></>) : "Service currently not available"}</p>
                     </div>
@@ -191,26 +237,29 @@ export default function ViewService() {
                         </div>
                     </div>
                 </div>
-                <div className="bottom">
-                    <h1>Reviews</h1>
-                    <Reviews reviews={reviews} />
-                    {!reviews || reviews && reviews.length == 0 ? <p className="no-reviews">No reviews yet, write the first review!</p> : undefined}
-                    {user && userCanWriteReview &&
-                        <>
-                            <label htmlFor="write-review">Write your review </label>
-                            <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
-                            <textarea ref={reviewRef} type="text" placeholder="e.g This was a great service!" />
-                            <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}<BiSolidPaperPlane/></button>
-                        </>
-                    }
-                    {
-                        !userCanWriteReview &&
+               {
+                reviews &&
+                 <div className="bottom">
+                 <h1>Reviews</h1>
+                 <Reviews reviews={reviews} />
+                 {!reviews || reviews && reviews.length == 0 ? <p className="no-reviews">No reviews yet, write the first review!</p> : undefined}
+                 {user && userCanWriteReview &&
+                     <>
+                         <label htmlFor="write-review">Write your review </label>
+                         <h2>Rating <StarRating size="20px" onChange={setReviewRating} interactable={true} initialRating={1} /></h2>
+                         <textarea ref={reviewRef} type="text" placeholder="e.g This was a great service!" />
+                         <button disabled={loading} onClick={publishReview}>{loading ? "Wait.." : "Publish"}<BiSolidPaperPlane/></button>
+                     </>
+                 }
+                 {
+                     !userCanWriteReview &&
 
-                        <>
-                            <h3 className="cant-review">{user ? "You already wrote your review!" : <><span onClick={() => { setShowAuthenticate(true); setShowService(null) }}>Login</span> to write reviews</>}</h3>
-                        </>
-                    }
-                </div>
+                     <>
+                         <h3 className="cant-review">{user ? "You already wrote your review!" : <><span onClick={() => { setShowAuthenticate(true); setShowService(null) }}>Login</span> to write reviews</>}</h3>
+                     </>
+                 }
+             </div>
+               }
             </Container>
         </LoginModal>
     );

@@ -117,7 +117,7 @@ export default function CreateService() {
                 uploadImage(selectedFile)
                     .then(res => {
                         createService(res.data.data.display_url);
-                        console.log(res);
+                        //console.log(res);
                     }).catch(error => {
                         Swal.fire({
                             title: `Image error`,

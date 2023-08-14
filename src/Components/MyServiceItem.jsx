@@ -9,10 +9,12 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { mainRed } from "../Colors/mainColors";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { toast } from "react-toastify";
 
-export default function MyServiceItem({ name, description, category, photo, price, available, service_id}) {
+export default function MyServiceItem({ name, description, category, photo, price, available, service_id,owner_id,rating}) {
 // { name, owner, description, category, photo, price, location, available, owner_id, service_id }
-const {user , categories , getUserInfo} = useContext(UserContext);
+//  name, owner, description, category, photo, price, location, available, owner_id, service_id, rating, reviews,phone 
+const {user , categories , getUserInfo,setShowService} = useContext(UserContext);
 const [loading,setLoading] = useState(false);
 const size = useWindowSize();
 const navigate = useNavigate();
@@ -40,8 +42,19 @@ const navigate = useNavigate();
     function deleteService() {
         axios.delete(`${import.meta.env.VITE_API_URL}/service/${service_id}`, { headers: { Authorization: localStorage.getItem("token") } })
             .then(res => {
-                getServices();
+                getUserInfo();
+                toast.success('Removed service!', {
+                    position: "bottom-left",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             }).catch(error => {
+                console.log(error);
                 Swal.fire({
                     title: `Error ${error.response ? error.response.status : ""}`,
                     text: `${error.response ? error.response.data : "Something went wrong"}`,
@@ -77,8 +90,13 @@ const navigate = useNavigate();
         })      
     }
 
+    function view()
+    {
+        setShowService({ name, description, category, photo, price, location, available, service_id,owner_id,rating});
+    }
+
     return (
-        <Container>
+        <Container onClick={view}>
             <Actions>
                 <BiSolidEdit title="edit" onClick={editService} />
                 <BsFillTrashFill onClick={askDeleteService} title="delete" />
@@ -220,7 +238,10 @@ const Content = styled.div`
 
     img{
         height: 60px;
+        width: 60px;
+        object-fit: cover;
         border-radius: 5px;
+        flex-shrink: 0;
     }
 `;
 

@@ -23,6 +23,7 @@ export default function App() {
   const [showService, setShowService] = useState(false);
   const [currentFilter,setCurrentFilter] = useState("All");
   const [services, setServices] = useState();
+  const [loadingUser,setLoadingUser] = useState(false);
 
   const categories = [
     "All",
@@ -48,15 +49,17 @@ export default function App() {
     
     const tokenValue = token ? token : localStorage.getItem("token");
     if(!tokenValue) return;
+    setLoadingUser(true);
       axios.get(`${import.meta.env.VITE_API_URL}/users/me`,{headers:{Authorization:tokenValue}})
       .then(res =>{
         //console.log(res.data);
+        setLoadingUser(false);
         setUser(res.data)
       })
       .catch(error =>{
+        setLoadingUser(false);
         console.log(error.response.data);
       });
-    
   }
 
   function getServices()
@@ -71,7 +74,7 @@ export default function App() {
   }
 
   return (
-    <UserContext.Provider value={{getServices,services, setServices,categories, user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter,showService, setShowService,getUserInfo }}>
+    <UserContext.Provider value={{loadingUser,getServices,services, setServices,categories, user, setUser, searchText, setSearchText, showAuthenticate, setShowAuthenticate, currentFilter,setCurrentFilter,showService, setShowService,getUserInfo }}>
       <BrowserRouter>
         <Header />
         <Background />
