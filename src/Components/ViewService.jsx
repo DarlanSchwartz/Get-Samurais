@@ -321,9 +321,7 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         position: relative;
-        @media (max-width: 500px) {
-            margin-top: 20px;
-        }
+        margin-top: 20px;
 
         .no-reviews{
             font-size: 13px;
