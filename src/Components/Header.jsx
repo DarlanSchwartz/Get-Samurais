@@ -64,7 +64,7 @@ export default function Header() {
             <Content>
                 <Logo />
                 {(y > 100 && location.pathname == '/') && <SearchBar>
-                    {user && <input value={searchText} onChange={(e) => setSearchText(e.target.value)} title="Search for samurai services" type="text" required placeholder="Search.." name="search" id="search" />}
+                    {<input value={searchText} onChange={(e) => setSearchText(e.target.value)} title="Search for samurai services" type="text" required placeholder="Search.." name="search" id="search" />}
                 </SearchBar> }
                 <Actions>
                     {user ?
