@@ -74,8 +74,11 @@ html, body, span, applet, object, iframe,
         min-height: 100%;
 		position: relative;
         --toastify-color-success: #1f1f1f !important;
-       
     }
+
+	.swal2-image{
+		object-fit: cover;
+	}
 
     button{
         cursor: pointer;

@@ -40,6 +40,9 @@ flex-direction: column;
 width: 100%;
 max-width: 1200px;
 margin-top: 50px;
+@media (max-width:400px) {
+    margin-top: 0;
+}  
 @media (max-width:1250px) {
     max-width: calc(100% - 40px);
 }

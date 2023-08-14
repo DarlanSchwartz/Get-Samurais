@@ -62,6 +62,7 @@ export default function ViewService() {
             text: 'Remove this service?',
             imageUrl: photo,
             imageWidth: 300,
+            imageHeight: 200,
             width: 300,
             confirmButtonText: `<p style="color:black">Yes</p>`,
             cancelButtonColor: mainRed,
