@@ -65,7 +65,7 @@ html, body, span, applet, object, iframe,
 			border-radius: 3px; /* Borda arredondada do handle */
 		}
 
-		overflow-y: scroll !important;
+		overflow-y: auto !important;
 		padding: 0 !important;
 	}
 

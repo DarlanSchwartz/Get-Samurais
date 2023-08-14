@@ -327,6 +327,8 @@ const Container = styled.div`
         }
         .cant-review{
             margin-top: 20px;
+            font-size: 13px;
+            color: lightgray;
             span{
                 color: ${blue};
                 &:hover{
@@ -417,7 +419,7 @@ const Container = styled.div`
            }
         }
         p{
-            line-height: 19px;
+            line-height: 22px;
             line-break: anywhere;
             
             span{

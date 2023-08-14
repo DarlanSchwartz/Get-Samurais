@@ -42,6 +42,7 @@ height: 100%;
 overflow: hidden;
 position: relative;
 
+
 .not-available{
     width: 102%;
     height: 102%;
@@ -71,6 +72,7 @@ display: flex;
 flex-direction: column;
 gap: 10px;
 overflow: hidden;
+
 
 
 h1{
@@ -123,6 +125,10 @@ background-color: transparent;
 border-radius: 20px;
 overflow: hidden;
 cursor: pointer;
+
+@media (max-width: 500px) {
+    border-radius: 5px;
+}
 
 .star-rating{
 }

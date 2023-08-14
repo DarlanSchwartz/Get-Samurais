@@ -97,6 +97,13 @@ const ContainerServices = styled.div`
     padding-top: 30px;
     padding-bottom: 30px;
 
+    @media (max-width: 500px) {
+        border-radius: 0;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
     .loading-gif{
         position: absolute;
         z-index: 2;
