@@ -12,6 +12,11 @@ Get Samurais is a simple and efficient way to hire general services and register
 - [react-loader-spinner](https://mhnpd.github.io/react-loader-spinner/)
 - [react-icons](https://react-icons.github.io/react-icons/)
 
+## Tech used
+
+- [vite](https://vitejs.dev/)
+- [react](https://react.dev/)
+
 ## Features
 
 - User registration and authentication
@@ -46,9 +51,12 @@ cd Get-Samurais
 ```bash 
 npm install
 ```
+
 4. Run the server back-end -> https://github.com/DarlanSchwartz/API-Get-Samurais
 
-5. Run the front-end 
+5. Setup your enviorment variables, create a .env file and fill the variables as show on the example file [.env.example](./.env.example)
+
+6. Run the front-end 
 
 ```bash 
 npm run dev
