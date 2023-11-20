@@ -2,6 +2,12 @@
 
 Get Samurais is a simple and efficient way to hire general services and register yours. Someone register a service for a price, you hire it, contact the Samurai , agree on a time and place to get your work done as fast as a ninja goes.
 
+# Demo
+[Try it HERE](https://get-samurais.vercel.app/)
+
+# Preview
+[<img src="./public/screenshots/screenshot1.PNG" align="center"/>](https://get-samurais.vercel.app/)
+
 ## Libraries used
 
 - [styled-components](https://www.styled-components.com/)
@@ -27,8 +33,8 @@ Get Samurais is a simple and efficient way to hire general services and register
 - Image upload via [img.bb](https://imgbb.com/)
 
 
+## How it works
 ### Using Shortly is straightforward:
-
 - Open the Get Samurais application in your web browser.
 - Register for an account or log in if you already have one.
 - On the home page, you'll discover the current registered services.
@@ -63,8 +69,3 @@ npm run dev
 ```
 
 That's it! Get Samurais should now be up and running on your specified port. You can access the application through your web browser.
-
-
-[Try it HERE](https://get-samurais.vercel.app/)
-
-[<img src="./public/screenshots/screenshot1.PNG" aling="center"/>](https://get-samurais.vercel.app/)
